@@ -1,0 +1,43 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "MaxMinMed",
+      "request": "launch",
+      "mainClass": "MaxMinMed",
+      "projectName": "EJ18_fb9c86d8",
+      "args": "1 2 3 4 5 4 3 2 1 -6"
+    },
+    {
+      "type": "java",
+      "name": "Maximo",
+      "request": "launch",
+      "mainClass": "Maximo",
+      "projectName": "EJ18_fb9c86d8"
+    },
+    {
+      "type": "java",
+      "name": "Media",
+      "request": "launch",
+      "mainClass": "Media",
+      "projectName": "EJ18_fb9c86d8"
+    },
+    {
+      "type": "java",
+      "name": "Minimo",
+      "request": "launch",
+      "mainClass": "Minimo",
+      "projectName": "EJ18_fb9c86d8"
+    }
+  ]
+}

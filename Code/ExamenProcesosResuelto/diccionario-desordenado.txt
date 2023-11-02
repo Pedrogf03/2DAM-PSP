@@ -1,0 +1,11 @@
+banco: establecimiento que guarda el dinero de sus clientes y da préstamos
+abandonado: aspecto descuidado
+abuelo: padre o madre de mi madre o de mi padre
+laboratorio: lugar en el que se hacen experimentos y trabajos generalmente relacionados con la ciencia
+galleta: dulce que está hecho con harina, azúcar y huevo de formas diferetes y cocido en el horno
+bacteria: Organismo muy pequeño que a veces produce enfermedades
+abanico: objeto que sirve para dar aire
+abrazo: consiste en rodear con los brazos a otra persona o animal
+banco: asiento alargado y estrecho donde pueden sentarse varias personas
+abuelo: padre o madre de mi madre o de mi padre
+labor: actividad, tarea
