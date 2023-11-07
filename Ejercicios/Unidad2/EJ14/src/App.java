@@ -12,26 +12,20 @@ public class App {
 
     h.start();
 
-    try {
-
-      h.join(10);
-      while (h.isAlive()) {
-        System.out.println("¿Quiere esperar más?");
-        long milis = sc.nextLong();
-        if (milis == 0) {
-          h.interrupt();
-          break;
-        } else {
-          h.join(milis);
-        }
+    h.join(10);
+    while (h.isAlive()) {
+      System.out.println("¿Quiere esperar más?");
+      long milis = sc.nextLong();
+      if (milis == 0) {
+        h.interrupt();
+        break;
+      } else {
+        h.join(milis);
       }
+    }
 
-      if (h.isInterrupted()) {
-        System.out.println("Hilo interrumpido.");
-      }
-
-    } catch (InterruptedException e) {
-
+    if (h.isInterrupted()) {
+      System.out.println("Hilo interrumpido.");
     }
 
     sc.close();

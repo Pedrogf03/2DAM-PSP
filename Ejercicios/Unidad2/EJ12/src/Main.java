@@ -5,7 +5,7 @@ public class Main {
   public static void main(String[] args) {
 
     Thread pares = new Hilo1();
-    Thread primos = new Hilo2(1728, 6);
+    Thread primos = new Hilo2(1728, 3);
 
     pares.start();
     primos.start();

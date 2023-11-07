@@ -12,13 +12,14 @@ public class Hilo extends Thread {
     long num = numero;
 
     for (int i = 2; i < numero; i++) {
+
       while (num % i == 0) {
 
         num /= i;
 
         System.out.println("Primos: " + i);
 
-        if (this.isInterrupted()) {
+        if (Thread.interrupted()) {
           return;
         }
 
