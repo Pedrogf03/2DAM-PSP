@@ -6,30 +6,31 @@ public class App {
     Scanner sc = new Scanner(System.in);
 
     System.out.print("Introduce un número entero positivo: ");
-    int num = Integer.parseInt(sc.nextLine());
+    long num = sc.nextLong();
 
     Hilo h = new Hilo(num);
 
     h.start();
 
-    Thread.sleep(10);
+    try {
 
-    while (true) {
-
-      if (!h.isAlive())
-        break;
-
-      System.out.println("¿Quiere seguir esperando? (y)");
-      String respuesta = sc.nextLine();
-
-      if (respuesta.equalsIgnoreCase("y")) {
-        System.out.println("Indique durante cuanto tiempo (ms) quiere seguir esperando: ");
-        int sleep = Integer.parseInt(sc.nextLine());
-        Thread.sleep(sleep);
-      } else {
-        System.out.println("Hilo interrumpido.");
-        h.interrupt();
+      h.join(10);
+      while (h.isAlive()) {
+        System.out.println("¿Quiere esperar más?");
+        long milis = sc.nextLong();
+        if (milis == 0) {
+          h.interrupt();
+          break;
+        } else {
+          h.join(milis);
+        }
       }
+
+      if (h.isInterrupted()) {
+        System.out.println("Hilo interrumpido.");
+      }
+
+    } catch (InterruptedException e) {
 
     }
 

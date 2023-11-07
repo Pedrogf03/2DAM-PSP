@@ -1,32 +1,28 @@
 public class Hilo extends Thread {
 
-  int numero;
+  long numero;
 
-  public Hilo(int num) {
+  public Hilo(long num) {
     this.numero = num;
   }
 
   @Override
   public void run() {
 
-    int num = numero;
+    long num = numero;
 
     for (int i = 2; i < numero; i++) {
+      while (num % i == 0) {
 
-      try {
-        while (num % i == 0) {
+        num /= i;
 
-          num /= i;
+        System.out.println("Primos: " + i);
 
-          System.out.println("Primos: " + i);
-
-          sleep(500);
-
+        if (this.isInterrupted()) {
+          return;
         }
-      } catch (InterruptedException e) {
-        break;
-      }
 
+      }
     }
 
   }
