@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Main {
 
   public static void main(String[] args) {
@@ -8,30 +10,34 @@ public class Main {
     pares.start();
     primos.start();
 
-    try {
-      Thread.sleep((int) (Math.random() * (5000 + 1)));
-    } catch (InterruptedException e) {
-    }
+    Random aleat = new Random();
 
-    pares.interrupt();
-
-    if (pares.isAlive()) {
-      if (pares.isInterrupted()) {
-        System.out.println("Hilo pares interrumpido.");
+    while (true) {
+      if (pares.isAlive()) {
+        try {
+          Thread.sleep(aleat.nextInt(4000) + 1000);
+          pares.interrupt();
+          System.out.println("¿Pares ha sido interrumpido? " + pares.isInterrupted());
+          System.out.println("¿Pares está vivo? " + pares.isAlive());
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
-    }
-
-    try {
-      Thread.sleep((int) (Math.random() * (5000 + 1)));
-    } catch (InterruptedException e) {
-    }
-
-    primos.interrupt();
-
-    if (primos.isAlive()) {
-      if (primos.isInterrupted()) {
-        System.out.println("Hilo primos interrumpido.");
+      if (primos.isAlive()) {
+        try {
+          Thread.sleep(aleat.nextInt(4000) + 1000);
+          primos.interrupt();
+          System.out.println("¿Primos ha sido interrumpido? " + primos.isInterrupted());
+          System.out.println("¿Primos está vivo? " + primos.isAlive());
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
+
+      if (!pares.isAlive() && !primos.isAlive()) {
+        break;
+      }
+
     }
 
   }

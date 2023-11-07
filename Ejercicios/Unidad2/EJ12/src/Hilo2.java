@@ -1,38 +1,36 @@
 public class Hilo2 extends Thread {
 
-  private int numero;
+  private int num;
   private int nFactores;
 
   public Hilo2(int n, int nFactores) {
-    this.numero = n;
+    this.num = n;
     this.nFactores = nFactores;
   }
 
   @Override
   public void run() {
-    int num = numero;
+    System.out.println("Factores primos: " + num);
+    long numero = num;
+    int factores = 0;
     for (int i = 2; i < numero; i++) {
       while (num % i == 0) {
-        num /= i;
+        num = num / i;
         System.out.println("Primos: " + i);
-        this.nFactores--;
-        try {
-          sleep(1000);
-        } catch (InterruptedException e) {
-          if (this.nFactores == 0) {
-            break;
+        factores++;
+        if (Thread.interrupted()) {
+          if (nFactores <= factores) {
+            System.out.println("Se han producido " + factores + "/" + nFactores + " factores.");
+            return;
           } else {
-            continue;
+            System.out.println("Se han producido " + factores + "/" + nFactores + " factores.");
+          }
+          if (num == 1) {
+            System.out.println("Fin de la descomposición.");
+            break;
           }
         }
-        if (this.nFactores == 0) {
-          break;
-        }
-      }
-      if (this.nFactores == 0) {
-        break;
       }
     }
-
   }
 }
