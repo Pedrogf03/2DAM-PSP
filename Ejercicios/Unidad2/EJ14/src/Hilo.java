@@ -16,9 +16,10 @@ public class Hilo extends Thread {
       while (num % i == 0) {
         num /= i;
         System.out.println("Primos: " + i);
-        if (Thread.interrupted()) {
-          return;
-        }
+      }
+
+      if (Thread.interrupted()) {
+        return;
       }
 
     }

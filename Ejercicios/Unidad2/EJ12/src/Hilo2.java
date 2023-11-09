@@ -1,9 +1,9 @@
 public class Hilo2 extends Thread {
 
-  private int num;
+  private long num;
   private int nFactores;
 
-  public Hilo2(int n, int nFactores) {
+  public Hilo2(long n, int nFactores) {
     this.num = n;
     this.nFactores = nFactores;
   }

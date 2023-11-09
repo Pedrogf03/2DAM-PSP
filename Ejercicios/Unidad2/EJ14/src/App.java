@@ -6,7 +6,7 @@ public class App {
     Scanner sc = new Scanner(System.in);
 
     System.out.print("Introduce un número entero positivo: ");
-    long num = sc.nextLong();
+    long num = sc.nextLong(); // 515684624612
 
     Hilo h = new Hilo(num);
 
