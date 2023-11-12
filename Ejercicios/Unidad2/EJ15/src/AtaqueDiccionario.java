@@ -45,7 +45,7 @@ public class AtaqueDiccionario {
       int time = Integer.parseInt(sc.nextLine());
 
       for (BuscaPasswd h : hilos) {
-        if (h.isAlive()) {
+        if (!h.isAlive()) {
           if (time == 0) {
             h.interrupt();
           } else {
@@ -68,7 +68,11 @@ public class AtaqueDiccionario {
     }
 
     for (BuscaPasswd h : hilos) {
-      System.out.println(h.getName() + ": " + h.encontrado());
+      if (!h.encontrado()) {
+        System.out.println(h.getName() + " no ha encontrado la contraeña");
+      } else {
+        System.out.println(h.getName() + " ha encontrado la contraeña: " + passwd);
+      }
     }
 
     sc.close();
