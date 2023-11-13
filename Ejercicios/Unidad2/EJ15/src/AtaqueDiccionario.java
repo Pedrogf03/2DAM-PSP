@@ -45,7 +45,7 @@ public class AtaqueDiccionario {
       int time = Integer.parseInt(sc.nextLine());
 
       for (BuscaPasswd h : hilos) {
-        if (!h.isAlive()) {
+        if (h.isAlive()) {
           if (time == 0) {
             h.interrupt();
           } else {
