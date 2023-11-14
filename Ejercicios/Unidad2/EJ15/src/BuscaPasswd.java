@@ -22,20 +22,22 @@ public class BuscaPasswd extends Thread {
   public void run() {
 
     for (int i = 0; i < palabras.length; i++) {
-      // try {
-      //   sleep(1000);
-      // } catch (Exception e) {
-
-      // }
       if (palabras[i].equals(passwd)) {
         found = true;
         for (BuscaPasswd h : hermanos) {
-          h.interrupt();
+          if (!h.equals(this)) {
+            h.interrupt();
+          }
         }
-        return;
+        break;
       }
       if (Thread.interrupted()) {
         return;
+      }
+      try {
+        sleep(1000);
+      } catch (Exception e) {
+
       }
     }
 

@@ -39,37 +39,35 @@ public class AtaqueDiccionario {
       h.start();
     }
 
-    while (true) {
+    // while (true) {
 
-      System.out.println("¿Cuanto tiempo quiere seguir esperando (ms)?");
-      int time = Integer.parseInt(sc.nextLine());
+    //   System.out.println("¿Cuanto tiempo quiere seguir esperando (ms)?");
+    //   int time = Integer.parseInt(sc.nextLine());
 
-      for (BuscaPasswd h : hilos) {
-        if (h.isAlive()) {
-          if (time == 0) {
-            h.interrupt();
-          } else {
-            h.join(time);
-          }
-        }
-      }
+    //   for (BuscaPasswd h : hilos) {
+    //     if (time == 0) {
+    //       h.interrupt();
+    //     } else {
+    //       h.join(time);
+    //     }
+    //   }
 
-      boolean end = true;
-      for (BuscaPasswd h : hilos) {
-        if (h.isAlive()) {
-          end = false;
-        }
-      }
+    //   boolean end = true;
+    //   for (BuscaPasswd h : hilos) {
+    //     if (h.isAlive()) {
+    //       end = false;
+    //     }
+    //   }
 
-      if (time == 0 || end) {
-        break;
-      }
+    //   if (time == 0 || end) {
+    //     break;
+    //   }
 
-    }
+    // }
 
     for (BuscaPasswd h : hilos) {
       if (!h.encontrado()) {
-        System.out.println(h.getName() + " no ha encontrado la contraeña");
+        System.out.println(h.getName() + " no ha encontrado la contraseña");
       } else {
         System.out.println(h.getName() + " ha encontrado la contraeña: " + passwd);
       }
