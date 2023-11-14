@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Carrera {
 
   public static void main(String[] args) {
@@ -19,10 +22,32 @@ public class Carrera {
     System.out.println("Bang!!");
     System.out.println("----------------------");
 
+    long inicio = System.currentTimeMillis();
+
     t1.start();
     t2.start();
     t3.start();
     t4.start();
+
+    try {
+      t4.join();
+    } catch (Exception e) {
+    }
+
+    long fin = System.currentTimeMillis();
+
+    System.out.println("Se acabó la carrera");
+    System.out.println("----------------------");
+
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+    Date dateInicio = new Date(inicio);
+    System.out.println("Inicio de la carrera " + formatter.format(dateInicio));
+
+    Date dateFin = new Date(fin);
+    System.out.println("Fin de la carrera " + formatter.format(dateFin));
+
+    System.out.println("Duracion (milis): " + (fin - inicio));
 
   }
 

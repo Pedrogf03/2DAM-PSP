@@ -2,12 +2,34 @@ import java.util.Random;
 
 public class Testigo {
 
+  private int orden;
+
+  public Testigo() {
+    this.orden = 1;
+  }
+
   public synchronized void quieroCorrer(int id) {
-    System.out.println("Atleta: Atleta " + id);
-    System.out.println("Sale: " + System.currentTimeMillis());
     try {
-      Thread.sleep(new Random().nextInt(3) + 9);
-    } catch (Exception ignore) {
+      while (id != orden) {
+        wait();
+      }
+      System.out.println("Atleta: Atleta " + id);
+
+      long sale = System.currentTimeMillis();
+      System.out.println("Sale: " + sale);
+
+      Thread.sleep(new Random().nextInt(2000) + 9000);
+
+      long llega = System.currentTimeMillis();
+      System.out.println("Sale: " + llega);
+
+      System.out.println("Tiempo (milis): " + (llega - sale));
+
+      System.out.println();
+
+      orden++;
+      notifyAll();
+    } catch (Exception e) {
     }
   }
 
