@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+
+//import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -20,17 +21,17 @@ public class Main {
     }
 
     Arbitro arbi = new Arbitro(numJug);
-    System.out.println("NÚMERO A ADIVINAR: " + arbi.num);
 
-    ArrayList<Jugador> jugadores = new ArrayList<>();
+    // ArrayList<Jugador> jugadores = new ArrayList<>();
 
     for (int i = 1; i <= numJug; i++) {
-      jugadores.add(new Jugador(i, arbi));
+      // jugadores.add(new Jugador(i, arbi));
+      new Jugador(i, arbi).start();
     }
 
-    for (Jugador j : jugadores) {
-      j.start(); // Iniciar cada jugador.
-    }
+    // for (Jugador j : jugadores) {
+    //   j.start(); // Iniciar cada jugador.
+    // }
 
   }
 

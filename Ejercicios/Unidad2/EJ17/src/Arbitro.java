@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Arbitro {
 
-  public int num; // Numero  a adivinar.
+  private int num; // Numero  a adivinar.
   private int turno; // Turno.
   private int jugadores; // Numero total de jugadores.
   private boolean terminado = false; // Se ha acabado la partida.
@@ -14,14 +14,15 @@ public class Arbitro {
       this.jugadores = jugadores;
       this.num = new Random().nextInt(10) + 1;
       this.turno = 1;
+      System.out.println("NÚMERO A ADIVINAR: " + this.num);
     }
   }
 
-  public int getTurno() {
+  public synchronized int getTurno() {
     return this.turno;
   }
 
-  public boolean isTerminado() {
+  public synchronized boolean isTerminado() {
     return this.terminado;
   }
 
@@ -31,7 +32,7 @@ public class Arbitro {
       System.out.println("\tJugador " + idJug + " gana, adivinó el número!!!");
     } else {
       this.turno++;
-      if (this.turno == (jugadores + 1)) {
+      if (this.turno > jugadores) {
         this.turno = 1;
       }
       System.out.println("\tLe toca a Jug" + this.turno);
