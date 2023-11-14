@@ -8,10 +8,10 @@ import java.lang.ProcessBuilder.Redirect;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class OrdenaDiccionario {
+public class OrdenadorDiccionario {
 
   public static void main(String[] args) {
-    OrdenaDiccionario od = new OrdenaDiccionario();
+    OrdenadorDiccionario od = new OrdenadorDiccionario();
 
     try {
       od.run(od.verificarLineaComandos(args));
@@ -67,7 +67,7 @@ public class OrdenaDiccionario {
       String line;
       while ((line = reader.readLine()) != null) {
         if (!outputs.containsKey((line.charAt(0) + ""))) {
-          ProcessBuilder pb = new ProcessBuilder("java", "OrdenarDefs");
+          ProcessBuilder pb = new ProcessBuilder("java", "OrdenadorDefiniciones");
 
           pb.environment().put("CLASSPATH", params.get("CLASSPATH"));
 
