@@ -1,4 +1,3 @@
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Carrera {
@@ -39,15 +38,13 @@ public class Carrera {
     System.out.println("Se acabó la carrera");
     System.out.println("----------------------");
 
-    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
     Date dateInicio = new Date(inicio);
-    System.out.println("Inicio de la carrera " + formatter.format(dateInicio));
+    System.out.println("Inicio de la carrera: " + dateInicio);
 
     Date dateFin = new Date(fin);
-    System.out.println("Fin de la carrera " + formatter.format(dateFin));
+    System.out.println("Fin de la carrera: " + dateFin);
 
-    System.out.println("Duracion (milis): " + (fin - inicio));
+    System.out.println("Duracion (s): " + ((fin - inicio) / 1000));
 
   }
 

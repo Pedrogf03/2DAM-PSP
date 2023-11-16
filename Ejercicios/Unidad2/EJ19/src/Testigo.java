@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.Random;
 
 public class Testigo {
@@ -15,15 +16,17 @@ public class Testigo {
       }
       System.out.println("Atleta: Atleta " + id);
 
-      long sale = System.currentTimeMillis();
-      System.out.println("Sale: " + sale);
+      long sale = (System.currentTimeMillis());
+      Date saleDate = new Date(sale);
+      System.out.println("Sale: " + saleDate);
 
       Thread.sleep(new Random().nextInt(2000) + 9000);
 
-      long llega = System.currentTimeMillis();
-      System.out.println("Sale: " + llega);
+      long llega = (System.currentTimeMillis());
+      Date llegaDate = new Date(System.currentTimeMillis());
+      System.out.println("Sale: " + llegaDate);
 
-      System.out.println("Tiempo (milis): " + (llega - sale));
+      System.out.println("Tiempo (s): " + ((llega - sale) / 1000));
 
       System.out.println();
 
