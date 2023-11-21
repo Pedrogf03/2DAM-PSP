@@ -1,52 +1,46 @@
 package V2;
 
-import java.util.Date;
+import java.util.ArrayList;
 
 public class Carrera {
 
   public static void main(String[] args) {
 
-    Testigo t = new Testigo();
+    ArrayList<Equipo> equipos = new ArrayList<>();
 
-    Atleta a1 = new Atleta(t, 1);
-    Atleta a2 = new Atleta(t, 2);
-    Atleta a3 = new Atleta(t, 3);
-    Atleta a4 = new Atleta(t, 4);
-
-    Thread t1 = new Thread(a1);
-    Thread t2 = new Thread(a2);
-    Thread t3 = new Thread(a3);
-    Thread t4 = new Thread(a4);
+    for (int i = 1; i <= 8; i++)
+      equipos.add(new Equipo(i));
 
     System.out.println("Preparados ...");
     System.out.println("Listos ...");
     System.out.println("Bang!!");
     System.out.println("----------------------");
 
-    long inicio = System.currentTimeMillis();
-
-    t1.start();
-    t2.start();
-    t3.start();
-    t4.start();
+    for (Equipo equipo : equipos)
+      equipo.start();
 
     try {
-      t4.join();
-    } catch (Exception e) {
+
+      for (Equipo equipo : equipos)
+        for (Atleta atleta : equipo.atletas)
+          atleta.join();
+
+    } catch (InterruptedException e) {
+
     }
 
-    long fin = System.currentTimeMillis();
+    long minTiempo = equipos.get(0).getFechaLlegada();
+    for (Equipo equipo : equipos) {
+      if (equipo.getFechaLlegada() < minTiempo) {
+        minTiempo = equipo.getFechaLlegada();
+      }
+    }
 
-    System.out.println("Se acabó la carrera");
-    System.out.println("----------------------");
-
-    Date dateInicio = new Date(inicio);
-    System.out.println("Inicio de la carrera: " + dateInicio);
-
-    Date dateFin = new Date(fin);
-    System.out.println("Fin de la carrera: " + dateFin);
-
-    System.out.println("Duracion (s): " + ((fin - inicio) / 1000));
+    for (Equipo equipo : equipos) {
+      if (equipo.getFechaLlegada() == minTiempo) {
+        System.out.println("Ha ganado el equipo " + equipo.id);
+      }
+    }
 
   }
 

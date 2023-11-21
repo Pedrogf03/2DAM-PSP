@@ -24,7 +24,7 @@ public class Testigo {
 
       long llega = (System.currentTimeMillis());
       Date llegaDate = new Date(System.currentTimeMillis());
-      System.out.println("Sale: " + llegaDate);
+      System.out.println("Llega: " + llegaDate);
 
       System.out.println("Tiempo (s): " + ((llega - sale) / 1000));
 

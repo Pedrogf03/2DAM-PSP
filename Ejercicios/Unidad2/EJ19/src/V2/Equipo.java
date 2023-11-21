@@ -2,28 +2,34 @@ package V2;
 
 import java.util.ArrayList;
 
-public class Equipo {
+public class Equipo extends Thread {
 
-  Testigo t;
-  ArrayList<Atleta> atletas;
+  private Testigo t;
+  public ArrayList<Atleta> atletas;
+  int id;
 
-  public Equipo() {
+  public Equipo(int id) {
+    this.id = id;
     t = new Testigo();
+    atletas = new ArrayList<>();
     crearAtletas();
   }
 
   private void crearAtletas() {
 
-    Atleta a1 = new Atleta(t, 1);
-    Atleta a2 = new Atleta(t, 2);
-    Atleta a3 = new Atleta(t, 3);
-    Atleta a4 = new Atleta(t, 4);
+    for (int i = 1; i <= 4; i++)
+      atletas.add(new Atleta(t, i, id));
 
-    atletas.add(a1);
-    atletas.add(a2);
-    atletas.add(a3);
-    atletas.add(a4);
+  }
 
+  @Override
+  public void run() {
+    for (Atleta atleta : atletas)
+      atleta.start();
+  }
+
+  public long getFechaLlegada() {
+    return t.fechaLlegada;
   }
 
 }

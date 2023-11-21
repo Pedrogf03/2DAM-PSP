@@ -1,40 +1,31 @@
 package V2;
 
-import java.util.Date;
 import java.util.Random;
 
 public class Testigo {
 
   private int orden;
+  public long fechaLlegada = 0;
 
   public Testigo() {
     this.orden = 1;
   }
 
-  public synchronized void quieroCorrer(int id) {
+  public synchronized void quieroCorrer(int id, int idEquipo) {
     try {
       while (id != orden) {
         wait();
       }
-      System.out.println("Atleta: Atleta " + id);
-
-      long sale = (System.currentTimeMillis());
-      Date saleDate = new Date(sale);
-      System.out.println("Sale: " + saleDate);
-
+      System.out.println("Sale: Atleta " + id + ", equipo: " + idEquipo);
       Thread.sleep(new Random().nextInt(2000) + 9000);
+      System.out.println("Llega: Atleta " + id + ", equipo: " + idEquipo);
 
-      long llega = (System.currentTimeMillis());
-      Date llegaDate = new Date(System.currentTimeMillis());
-      System.out.println("Sale: " + llegaDate);
-
-      System.out.println("Tiempo (s): " + ((llega - sale) / 1000));
-
-      System.out.println();
+      fechaLlegada = System.currentTimeMillis();
 
       orden++;
       notifyAll();
     } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
