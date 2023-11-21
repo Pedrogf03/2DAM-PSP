@@ -35,9 +35,8 @@ public class AtaqueDiccionario {
 
     }
 
-    for (Thread h : hilos) {
+    for (Thread h : hilos)
       h.start();
-    }
 
     // while (true) {
 
@@ -65,9 +64,8 @@ public class AtaqueDiccionario {
 
     // }
 
-    for (Thread h : hilos) {
+    for (Thread h : hilos)
       h.join();
-    }
 
     for (BuscaPasswd h : hilos) {
       if (!h.found) {
