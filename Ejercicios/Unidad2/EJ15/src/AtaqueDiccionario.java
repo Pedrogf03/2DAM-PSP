@@ -65,6 +65,10 @@ public class AtaqueDiccionario {
 
     // }
 
+    for (Thread h : hilos) {
+      h.join();
+    }
+
     for (BuscaPasswd h : hilos) {
       if (!h.found) {
         if (h.interrumpido) {
