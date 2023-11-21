@@ -2,10 +2,10 @@ import java.util.ArrayList;
 
 public class BuscaPasswd extends Thread {
 
-  String[] palabras;
-  String passwd;
-  boolean found = false;
-  ArrayList<BuscaPasswd> hermanos = new ArrayList<>();
+  private String[] palabras;
+  private String passwd;
+  private boolean found = false;
+  private ArrayList<BuscaPasswd> hermanos = new ArrayList<>();
 
   public BuscaPasswd(String[] palabras, String passwd, String name, ArrayList<BuscaPasswd> hermanos) {
     super(name);
@@ -33,11 +33,6 @@ public class BuscaPasswd extends Thread {
       }
       if (Thread.interrupted()) {
         return;
-      }
-      try {
-        sleep(1000);
-      } catch (Exception e) {
-
       }
     }
 
