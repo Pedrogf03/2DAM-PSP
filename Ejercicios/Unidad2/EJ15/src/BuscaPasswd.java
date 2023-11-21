@@ -4,18 +4,15 @@ public class BuscaPasswd extends Thread {
 
   private String[] palabras;
   private String passwd;
-  private boolean found = false;
+  boolean found = false;
   private ArrayList<BuscaPasswd> hermanos = new ArrayList<>();
+  boolean interrumpido = false;
 
   public BuscaPasswd(String[] palabras, String passwd, String name, ArrayList<BuscaPasswd> hermanos) {
     super(name);
     this.palabras = palabras;
     this.passwd = passwd;
     this.hermanos = hermanos;
-  }
-
-  public boolean encontrado() {
-    return found;
   }
 
   @Override
@@ -32,6 +29,7 @@ public class BuscaPasswd extends Thread {
         break;
       }
       if (Thread.interrupted()) {
+        interrumpido = true;
         return;
       }
     }

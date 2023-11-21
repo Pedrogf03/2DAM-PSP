@@ -66,8 +66,12 @@ public class AtaqueDiccionario {
     // }
 
     for (BuscaPasswd h : hilos) {
-      if (!h.encontrado()) {
-        System.out.println(h.getName() + " no ha encontrado la contraseña");
+      if (!h.found) {
+        if (h.interrumpido) {
+          System.out.println(h.getName() + " interrumpido.");
+        } else {
+          System.out.println(h.getName() + " no ha encontrado la contraseña.");
+        }
       } else {
         System.out.println(h.getName() + " ha encontrado la contraeña: " + passwd);
       }
