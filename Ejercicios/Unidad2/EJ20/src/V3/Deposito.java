@@ -22,7 +22,7 @@ public class Deposito {
     place.push(num);
   }
 
-  public synchronized void sacar() {
+  public synchronized int sacar() {
     while (place.empty()) {
       try {
         wait();
@@ -30,22 +30,11 @@ public class Deposito {
       }
     }
 
-    descomponerPrimos(place.pop());
+    int num = place.pop();
+
     notifyAll();
-  }
 
-  public synchronized void descomponerPrimos(int num) {
-    long numero = num;
-    System.out.print("Descomposición de " + num + ": ");
-    for (int i = 2; i < numero; i++) {
-      while (num % i == 0) {
-        num = num / i;
-        System.out.print(i + " ");
-      }
-    }
-
-    System.out.println();
-
+    return num;
   }
 
 }

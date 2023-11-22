@@ -13,7 +13,7 @@ public class Productor extends Thread {
   @Override
   public void run() {
     for (int i = 0; i < 10; i++) {
-      int num = new Random().nextInt(100);
+      int num = new Random().nextInt(100) + 1;
       d.depositar(num);
       try {
         sleep(new Random().nextInt(3000) + 1000);
