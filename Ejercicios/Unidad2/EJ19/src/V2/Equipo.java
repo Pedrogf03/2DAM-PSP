@@ -7,6 +7,7 @@ public class Equipo extends Thread {
   private Testigo t;
   public ArrayList<Atleta> atletas;
   int id;
+  public long momentoLlegada = 0;
 
   public Equipo(int id) {
     this.id = id;
@@ -26,10 +27,16 @@ public class Equipo extends Thread {
   public void run() {
     for (Atleta atleta : atletas)
       atleta.start();
+    try {
+      for (Atleta atleta : atletas)
+        atleta.join();
+    } catch (InterruptedException e) {
+    }
+    momentoLlegada = System.currentTimeMillis();
   }
 
   public long getFechaLlegada() {
-    return t.momentoLlegada;
+    return momentoLlegada;
   }
 
 }

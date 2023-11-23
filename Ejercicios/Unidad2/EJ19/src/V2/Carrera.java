@@ -22,8 +22,7 @@ public class Carrera {
     try {
 
       for (Equipo equipo : equipos)
-        for (Atleta atleta : equipo.atletas)
-          atleta.join();
+        equipo.join();
 
     } catch (InterruptedException e) {
     }
