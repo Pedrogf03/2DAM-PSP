@@ -29,7 +29,7 @@ public class Equipo extends Thread {
   }
 
   public long getFechaLlegada() {
-    return t.fechaLlegada;
+    return t.momentoLlegada;
   }
 
 }
