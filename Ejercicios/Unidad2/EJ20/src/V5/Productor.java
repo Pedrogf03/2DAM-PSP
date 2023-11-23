@@ -1,4 +1,4 @@
-package V4;
+package V5;
 
 import java.util.Random;
 
@@ -12,7 +12,6 @@ public class Productor extends Thread {
 
   @Override
   public void run() {
-
     try {
       while (true) {
         int num = new Random().nextInt(100) + 1;

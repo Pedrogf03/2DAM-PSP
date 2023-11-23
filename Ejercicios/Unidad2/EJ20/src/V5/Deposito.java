@@ -1,4 +1,4 @@
-package V4;
+package V5;
 
 import java.util.Stack;
 
@@ -19,11 +19,14 @@ public class Deposito {
   }
 
   public synchronized int sacar() throws InterruptedException {
-    while (place.empty())
+    while (place.empty()) {
       wait();
+    }
 
     int num = place.pop();
+
     notifyAll();
+
     return num;
   }
 

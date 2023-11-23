@@ -46,9 +46,7 @@ public class Main {
 
     sc.close();
 
-    for (
-
-    Map.Entry<String, ArrayList<Integer>> entry : c.factores.entrySet()) {
+    for (Map.Entry<String, ArrayList<Integer>> entry : c.factores.entrySet()) {
       System.out.print(entry.getKey() + ": ");
       if (entry.getValue().isEmpty()) {
         System.out.print("es primo");
