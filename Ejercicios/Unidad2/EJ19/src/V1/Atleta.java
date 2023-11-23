@@ -1,3 +1,5 @@
+package V1;
+
 public class Atleta implements Runnable {
 
   private Testigo testigo;
