@@ -26,21 +26,16 @@ public class Carrera {
           atleta.join();
 
     } catch (InterruptedException e) {
-
     }
 
     long minTiempo = equipos.get(0).getFechaLlegada();
-    for (Equipo equipo : equipos) {
-      if (equipo.getFechaLlegada() < minTiempo) {
+    for (Equipo equipo : equipos)
+      if (equipo.getFechaLlegada() < minTiempo)
         minTiempo = equipo.getFechaLlegada();
-      }
-    }
 
-    for (Equipo equipo : equipos) {
-      if (equipo.getFechaLlegada() == minTiempo) {
+    for (Equipo equipo : equipos)
+      if (equipo.getFechaLlegada() == minTiempo)
         System.out.println("Ha ganado el equipo " + equipo.id);
-      }
-    }
 
   }
 

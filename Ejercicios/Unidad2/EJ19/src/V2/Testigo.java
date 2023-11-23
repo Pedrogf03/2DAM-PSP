@@ -13,9 +13,10 @@ public class Testigo {
 
   public synchronized void quieroCorrer(int id, int idEquipo) {
     try {
-      while (id != orden) {
+
+      while (id != orden)
         wait();
-      }
+
       System.out.println("Sale: Atleta " + id + ", equipo: " + idEquipo);
       Thread.sleep(new Random().nextInt(2000) + 9000);
       System.out.println("Llega: Atleta " + id + ", equipo: " + idEquipo);
