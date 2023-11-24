@@ -20,8 +20,8 @@ public class Consumidor extends Thread {
   @Override
   public void run() {
     while (true) {
-      descomponerPrimos(d.sacar());
       try {
+        descomponerPrimos(d.sacar());
         sleep(new Random().nextInt(3000) + 1000);
       } catch (InterruptedException e) {
         return;

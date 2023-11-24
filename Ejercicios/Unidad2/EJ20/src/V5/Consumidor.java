@@ -25,7 +25,9 @@ public class Consumidor extends Thread {
         sleep(new Random().nextInt(3000) + 1000);
       }
     } catch (InterruptedException e) {
-      return;
+      if (done()) {
+        return;
+      }
     }
 
   }
