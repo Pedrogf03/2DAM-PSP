@@ -27,14 +27,15 @@ public class Carrera {
     } catch (InterruptedException e) {
     }
 
-    long minTiempo = equipos.get(0).getFechaLlegada();
+    long minTiempo = equipos.get(0).getTiempoTotal();
     for (Equipo equipo : equipos)
-      if (equipo.getFechaLlegada() < minTiempo)
-        minTiempo = equipo.getFechaLlegada();
+      if (equipo.getTiempoTotal() < minTiempo)
+        minTiempo = equipo.getTiempoTotal();
 
     for (Equipo equipo : equipos)
-      if (equipo.getFechaLlegada() == minTiempo)
-        System.out.println("Ha ganado el equipo " + equipo.id);
+      if (equipo.getTiempoTotal() == minTiempo)
+        System.out.println(
+            "Ha ganado el equipo " + equipo.getIdEquipo() + ", tiempo total: " + equipo.getTiempoTotal() / 1000 + "\"");
 
   }
 
