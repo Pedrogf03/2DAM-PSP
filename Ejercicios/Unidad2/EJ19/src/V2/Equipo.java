@@ -31,7 +31,6 @@ public class Equipo extends Thread {
   @Override
   public void run() {
     momentoSalida = System.currentTimeMillis();
-    ;
     for (Atleta atleta : atletas)
       atleta.start();
     try {
