@@ -4,17 +4,17 @@ public class Atleta extends Thread {
 
   private Testigo testigo;
   private int id;
-  private int idEquipo;
+  private Equipo equipo;
 
-  public Atleta(Testigo t, int id, int idEquipo) {
+  public Atleta(Testigo t, int id, Equipo equipo) {
     this.testigo = t;
     this.id = id;
-    this.idEquipo = idEquipo;
+    this.equipo = equipo;
   }
 
   @Override
   public void run() {
-    testigo.quieroCorrer(id, idEquipo);
+    testigo.quieroCorrer(id, equipo);
   }
 
 }

@@ -5,12 +5,17 @@ import java.util.ArrayList;
 public class Equipo extends Thread {
 
   private Testigo t;
-  public ArrayList<Atleta> atletas;
-  int id;
-  public long momentoLlegada = 0;
+  private ArrayList<Atleta> atletas;
+  private int idEquipo;
+  private long momentoLlegada = 0;
+  private long momentoSalida = 0;
+
+  public int getIdEquipo() {
+    return idEquipo;
+  }
 
   public Equipo(int id) {
-    this.id = id;
+    this.idEquipo = id;
     t = new Testigo();
     atletas = new ArrayList<>();
     crearAtletas();
@@ -19,12 +24,13 @@ public class Equipo extends Thread {
   private void crearAtletas() {
 
     for (int i = 1; i <= 4; i++)
-      atletas.add(new Atleta(t, i, id));
+      atletas.add(new Atleta(t, i, this));
 
   }
 
   @Override
   public void run() {
+    momentoSalida = System.currentTimeMillis();
     for (Atleta atleta : atletas)
       atleta.start();
     try {
@@ -35,8 +41,8 @@ public class Equipo extends Thread {
     momentoLlegada = System.currentTimeMillis();
   }
 
-  public long getFechaLlegada() {
-    return momentoLlegada;
+  public long getTiempoTotal() {
+    return momentoLlegada - momentoSalida;
   }
 
 }
