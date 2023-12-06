@@ -76,12 +76,23 @@ public class Tren {
     System.out.println("El Maquinista grita: 'il viaggio comincia' " + now.getMinute() + ":" + now.getSecond());
   }
 
-  public void finalizarViaje() throws InterruptedException {
+  public synchronized void finalizarViaje() throws InterruptedException {
     //TO-DO
     LocalDateTime now = LocalDateTime.now();
     System.out.println("El Maquinista grita: 'il viaggio finisce' " + now.getMinute() + ":" + now.getSecond());
 
     bajarPasajeros();
+
+    System.out.println("------------ FIN VIAJE ------------");
+
+    viajes--;
+    viajando = false; // Una vez que hayan bajado todos los pasajeros, es realmente cuando el viaje acaba, y ya pueden entrar nuevos pasajeros.
+
+    notifyAll(); // Se notifica que se ha acabado el viaje.
+
+    if (viajesDone()) {
+      System.out.println("No hay más viajes");
+    }
 
   }
 
@@ -96,16 +107,6 @@ public class Tren {
       }
     }
 
-    System.out.println("------------ FIN VIAJE ------------");
-
-    viajes--;
-    viajando = false; // Una vez que hayan bajado todos los pasajeros, es realmente cuando el viaje acaba, y ya pueden entrar nuevos pasajeros.
-
-    notifyAll(); // Se notifica que se ha acabado el viaje.
-
-    if (viajesDone()) {
-      System.out.println("No hay más viajes");
-    }
   }
 
 }
