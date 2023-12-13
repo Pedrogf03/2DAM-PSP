@@ -83,6 +83,10 @@ public class Tren {
 
     bajarPasajeros();
 
+    if (vagon.get(1).isEmpty() && vagon.get(2).isEmpty()) {
+      System.out.println("Tren vacío");
+    }
+
     System.out.println("------------ FIN VIAJE ------------");
 
     viajes--;
@@ -99,13 +103,17 @@ public class Tren {
   // Función para bajar a los pasajeros del tren.
   public synchronized void bajarPasajeros() {
     //TO-DO
+    int contador = 0;
     for (Map.Entry<Integer, LinkedList<Pasajero>> entry : vagon.entrySet()) {
       // Se recorre el mapa de vagones, en orden del primero al último.
       for (int i = 0; i < capacidadVagon; i++) {
         Pasajero p = entry.getValue().poll(); // Se van bajando los pasajeros.
         System.out.println("Se baja el pasajero " + p + " del vagón " + entry.getKey());
+        contador++;
       }
     }
+
+    System.out.println("Se han bajado " + contador + " pasajeros");
 
   }
 
