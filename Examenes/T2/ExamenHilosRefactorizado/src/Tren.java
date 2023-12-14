@@ -62,8 +62,19 @@ public class Tren {
     while (!finViaje)
       wait();
 
-    bajarPasajeros();
+    extracted();
 
+  }
+
+  private void extracted() {
+    if (!vagon1.isEmpty()) {
+      System.out.println("Se baja el pasajero " + vagon1.poll() + " del primer vagón.");
+    } else if (!vagon2.isEmpty()) {
+      System.out.println("Se baja el pasajero " + vagon2.poll() + " del segundo vagón.");
+      if (vagon2.isEmpty()) {
+        notifyAll();
+      }
+    }
   }
 
   public synchronized void empezarViaje() throws InterruptedException {
@@ -100,17 +111,6 @@ public class Tren {
       puedeSubir = true;
     }
 
-  }
-
-  public void bajarPasajeros() {
-    if (!vagon1.isEmpty()) {
-      System.out.println("Se baja el pasajero " + vagon1.poll() + " del primer vagón.");
-    } else if (!vagon2.isEmpty()) {
-      System.out.println("Se baja el pasajero " + vagon2.poll() + " del segundo vagón.");
-      if (vagon2.isEmpty()) {
-        notifyAll();
-      }
-    }
   }
 
 }
