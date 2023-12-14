@@ -11,6 +11,7 @@ public class Tren {
 
   private boolean viajando = false;
   private boolean finViaje = false;
+  private boolean puedeSubir = true;
 
   public Tren(int capacidadVagon, int viajes) {
     //TO-DO
@@ -33,7 +34,7 @@ public class Tren {
   public synchronized void viajar(Pasajero p) throws InterruptedException {
     //TO-DO
 
-    while (viajando || trenLleno() || !quedanViajes()) {
+    while (!puedeSubir) {
       System.out.println("No se puede subir. El pasajero " + p + " espera");
       wait();
     }
@@ -45,6 +46,7 @@ public class Tren {
       vagon2.add(p);
       if (trenLleno()) {
         viajando = true;
+        puedeSubir = false;
         System.out.println("Se sube el pasajero " + p + " al segundo vagón y es el último en entrar");
         notifyAll();
       } else {
@@ -63,16 +65,9 @@ public class Tren {
     } else if (!vagon2.isEmpty()) {
       System.out.println("Se baja el pasajero " + vagon2.poll() + " del segundo vagón.");
       if (vagon2.isEmpty()) {
-        finViaje = false;
-        System.out.println("----- FIN DEL VIAJE -----");
-        viajando = false;
-        if (viajes == 0) {
-          System.out.println("NO QUEDAN VIAJES");
-        }
+        notifyAll();
       }
     }
-
-    notifyAll();
 
   }
 
@@ -92,12 +87,23 @@ public class Tren {
     System.out.println("El Maquinista grita: 'il viaggio finisce' " + now.getMinute() + ":" + now.getSecond());
     //TO-DO
 
-    viajes--;
     finViaje = true;
+    viajando = false;
+    viajes--;
+
     notifyAll();
 
-    while (finViaje)
+    while (!vagon1.isEmpty() || !vagon2.isEmpty())
       wait();
+
+    System.out.println("----- FIN DE VIAJE -----");
+
+    finViaje = false;
+    if (!quedanViajes()) {
+      System.out.println("No quedan viajes");
+    } else {
+      puedeSubir = true;
+    }
 
   }
 }
