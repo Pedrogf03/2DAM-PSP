@@ -44,13 +44,15 @@ public class Tren {
       System.out.println("Se sube el pasajero " + p + " al primer vagón");
     } else if (vagon2.size() < capacidadVagon) {
       vagon2.add(p);
+      System.out.print("Se sube el pasajero " + p + " al segundo vagón");
       if (trenLleno()) {
         viajando = true;
         puedeSubir = false;
-        System.out.println("Se sube el pasajero " + p + " al segundo vagón y es el último en entrar");
+        System.out.println(" y es el último en entrar");
+        System.out.println("Tren lleno");
         notifyAll();
       } else {
-        System.out.println("Se sube el pasajero " + p + " al segundo vagón");
+        System.out.println();
       }
     }
 
