@@ -3,7 +3,7 @@ public class Principal {
   public static void main(String[] args) {
 
     final int MAX_LATAS_CLIENTE = 10;
-    final int CLIENTES = 10;
+    final int CLIENTES = 3;
 
     Supermercado s = new Supermercado(MAX_LATAS_CLIENTE);
 
