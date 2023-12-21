@@ -5,47 +5,28 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class Cliente {
   public static void main(String[] args) throws IOException {
 
-    Socket socketCliente = null;
-    BufferedReader entrada = null;
-    PrintWriter salida = null;
+    try (Socket socketCliente = new Socket("localhost", 4444); BufferedReader entrada = new BufferedReader(new InputStreamReader(socketCliente.getInputStream())); PrintWriter salida = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketCliente.getOutputStream())), true);) {
 
-    try {
+      try (Scanner sc = new Scanner(System.in);) {
 
-      socketCliente = new Socket("localhost", 4444);
-      entrada = new BufferedReader(new InputStreamReader(socketCliente.getInputStream()));
-      salida = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketCliente.getOutputStream())), true);
+        int num = Integer.parseInt(sc.nextLine());
+        System.out.println("Cliente: " + num);
+        salida.println(num);
+        String respuesta = entrada.readLine();
+        System.out.println("Servidor: " + respuesta);
+
+      } catch (IOException e) {
+        System.out.println("IOException: " + e.getMessage());
+      }
 
     } catch (IOException e) {
       System.err.println("No puede establer canales de E/S para la conexión");
       System.exit(-1);
-    }
-
-    BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-    int num;
-
-    try {
-
-      // Leo la entrada del usuario
-      num = Integer.parseInt(stdIn.readLine());
-      // La envia al servidor
-      salida.println(num);
-      // Envía a la salida estándar la respuesta del servidor
-      num = Integer.parseInt(entrada.readLine());
-      System.out.println("Respuesta servidor: " + num);
-      // Si es "Adios" es que finaliza la comunicación
-
-    } catch (IOException e) {
-      System.out.println("IOException: " + e.getMessage());
-    } finally {
-      // Libera recursos
-      salida.close();
-      entrada.close();
-      stdIn.close();
-      socketCliente.close();
     }
 
   }
