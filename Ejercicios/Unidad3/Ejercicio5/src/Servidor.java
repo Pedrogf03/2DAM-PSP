@@ -16,21 +16,23 @@ public class Servidor {
     // Primero se abre el puerto para que escuche
     try (ServerSocket socketServidor = new ServerSocket(PORT)) {
 
-      System.out.println("Escuchando: " + socketServidor);
+      while (true) {
+        System.out.println("Escuchando: " + socketServidor);
 
-      // Luego llega la conexión del cliente y se hace lo que corresponde
-      try (Socket socketCliente = socketServidor.accept(); BufferedReader entrada = new BufferedReader(new InputStreamReader(socketCliente.getInputStream())); PrintWriter salida = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketCliente.getOutputStream())), true);) {
+        // Luego llega la conexión del cliente y se hace lo que corresponde
+        try (Socket socketCliente = socketServidor.accept(); BufferedReader entrada = new BufferedReader(new InputStreamReader(socketCliente.getInputStream())); PrintWriter salida = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketCliente.getOutputStream())), true);) {
 
-        System.out.println("Conexión acceptada: " + socketCliente);
+          System.out.println("Conexión acceptada: " + socketCliente);
 
-        String str = entrada.readLine();
-        System.out.println("Cliente: " + str);
-        int num = (Integer.parseInt(str) * Integer.parseInt(str));
-        System.out.println("Servidor: " + num);
-        salida.println(num);
+          String str = entrada.readLine();
+          System.out.println("Cliente: " + str);
+          int num = (Integer.parseInt(str) * Integer.parseInt(str));
+          System.out.println("Servidor: " + num);
+          salida.println(num);
 
-      } catch (IOException e) {
-        System.out.println("IOException: " + e.getMessage());
+        } catch (IOException e) {
+          System.out.println("IOException: " + e.getMessage());
+        }
       }
 
     } catch (IOException e) {
