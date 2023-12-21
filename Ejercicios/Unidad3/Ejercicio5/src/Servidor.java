@@ -12,9 +12,13 @@ public class Servidor {
   private static final int PORT = 4444;
 
   public static void main(String[] args) throws IOException {
+
+    // Primero se abre el puerto para que escuche
     try (ServerSocket socketServidor = new ServerSocket(PORT)) {
 
       System.out.println("Escuchando: " + socketServidor);
+
+      // Luego llega la conexión del cliente y se hace lo que corresponde
       try (Socket socketCliente = socketServidor.accept(); BufferedReader entrada = new BufferedReader(new InputStreamReader(socketCliente.getInputStream())); PrintWriter salida = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socketCliente.getOutputStream())), true);) {
 
         System.out.println("Conexión acceptada: " + socketCliente);
