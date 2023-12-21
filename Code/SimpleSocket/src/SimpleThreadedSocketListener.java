@@ -41,27 +41,4 @@ public class SimpleThreadedSocketListener {
     new SimpleThreadedSocketListener().listen();
   }
 
-  class ClientThread extends Thread {
-
-    Socket socket;
-
-    public ClientThread(Socket socket) {
-      this.socket = socket;
-    }
-
-    @Override
-    public void run() {
-      InputStream in;
-      try {
-        in = socket.getInputStream();
-        int byteRead;
-        // Block until the client closes the connection, results in read() returns -1
-        while ((byteRead = in.read()) != -1) {
-          System.out.print((char) byteRead);
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
 }
