@@ -6,6 +6,7 @@ public class Servidor {
 
   ServerSocket server;
   final static int SERVERPORT = 4444;
+  final static int CLIENTES = 3;
 
   // Constructor to allocate a ServerSocket listening at the given port.
   public Servidor() {
@@ -19,7 +20,7 @@ public class Servidor {
 
   // Start listening.
   private void listen() {
-    for (int i = 1; i <= 3; i++) {
+    for (int i = 1; i <= CLIENTES; i++) {
       try {
         Socket socket = server.accept();
         // Start a new thread for each client to perform block-IO operations.
