@@ -5,8 +5,41 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Cliente {
+
+  private String[] args;
+
   public static void main(String[] args) throws IOException {
 
+    try {
+      new Cliente(args);
+    } catch (CommandLineException e) {
+      e.printError();
+    }
+
+  }
+
+  public Cliente(String[] args) throws CommandLineException {
+    this.args = verificarLinea(args);
+    run();
+  }
+
+  public String[] verificarLinea(String[] args) throws CommandLineException {
+
+    if (!args[0].equals("-d")) {
+      throw new CommandLineException(1);
+    }
+    if (!args[2].equals("-p")) {
+      throw new CommandLineException(2);
+    }
+    if (!args[4].equals("-m")) {
+      throw new CommandLineException(3);
+    }
+
+    return args;
+
+  }
+
+  public void run() {
     try (Socket socketCliente = new Socket(args[1], Integer.parseInt(args[3]));
         DataInputStream entrada = new DataInputStream(socketCliente.getInputStream());
         DataOutputStream salida = new DataOutputStream(socketCliente.getOutputStream());
@@ -21,7 +54,6 @@ public class Cliente {
       System.err.println("No puede establer canales de E/S para la conexión");
       System.exit(-1);
     }
-
   }
 
 }
