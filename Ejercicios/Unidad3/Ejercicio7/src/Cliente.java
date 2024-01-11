@@ -2,7 +2,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Scanner;
 
 public class Cliente {
 
@@ -42,8 +41,7 @@ public class Cliente {
   public void run() {
     try (Socket socketCliente = new Socket(args[1], Integer.parseInt(args[3]));
         DataInputStream entrada = new DataInputStream(socketCliente.getInputStream());
-        DataOutputStream salida = new DataOutputStream(socketCliente.getOutputStream());
-        Scanner sc = new Scanner(System.in);) {
+        DataOutputStream salida = new DataOutputStream(socketCliente.getOutputStream());) {
 
       String palabra = args[5];
       salida.writeUTF(palabra);
