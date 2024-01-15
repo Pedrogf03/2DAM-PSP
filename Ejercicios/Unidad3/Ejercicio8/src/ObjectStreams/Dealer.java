@@ -9,18 +9,7 @@ public class Dealer {
     this.num = num;
   }
 
-  public synchronized int comprobarNumero(int numJugado, int turnoJug) throws InterruptedException {
-
-    while (turno != turnoJug) {
-      wait();
-    }
-
-    turno++;
-    if (turno > ServidorAdivina.JUGADORES) {
-      turno = 1;
-    }
-
-    notifyAll();
+  public int comprobarNumero(int numJugado, int turnoJug) throws InterruptedException {
 
     if (num < numJugado) {
       return -1;
@@ -36,8 +25,19 @@ public class Dealer {
     return turno;
   }
 
-  public synchronized void waitTurno(int turnoJug) throws InterruptedException {
+  public synchronized void waitForNum() throws InterruptedException {
     wait();
+  }
+
+  public synchronized void notificarNum() throws InterruptedException {
+    notifyAll();
+  }
+
+  public synchronized void aumentarTurno() {
+    turno++;
+    if (turno > ServidorAdivina.JUGADORES) {
+      turno = 1;
+    }
   }
 
 }

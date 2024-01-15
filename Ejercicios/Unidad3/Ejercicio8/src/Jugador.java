@@ -28,18 +28,11 @@ public class Jugador {
         if (turnoActual == turno) {
           int num = sc.nextInt();
           salida.writeInt(num);
-
-          System.out.println(entrada.readUTF());
-
-        } else {
-          entrada.readInt();
         }
+
+        System.out.println(entrada.readUTF());
 
         fin = entrada.readBoolean();
-
-        if (fin) {
-          System.out.println("Un jugador ha adivinado el número. Fin del juego");
-        }
 
       } while (!fin);
 

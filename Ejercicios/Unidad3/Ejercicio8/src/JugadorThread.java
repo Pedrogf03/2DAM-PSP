@@ -10,6 +10,8 @@ public class JugadorThread extends Thread {
   private Dealer dealer;
   private static boolean fin = false;
 
+  private static int numJug;
+
   public JugadorThread(Socket socket, int turnoJug, Dealer dealer) {
     this.socket = socket;
     this.turnoJug = turnoJug;
@@ -27,13 +29,16 @@ public class JugadorThread extends Thread {
 
       do {
 
-        salida.writeInt(dealer.getTurno());
+        int turnoActual = dealer.getTurno();
+        salida.writeInt(turnoActual);
 
-        if (turnoJug == dealer.getTurno()) {
+        if (turnoJug == turnoActual) {
           salida.writeUTF("Tu turno");
-          int numJug = entrada.readInt();
+          JugadorThread.numJug = entrada.readInt();
+          dealer.notificarNum();
+          dealer.aumentarTurno();
 
-          switch (dealer.comprobarNumero(numJug, turnoJug)) {
+          switch (dealer.comprobarNumero(numJug, turnoActual)) {
             case 1:
               salida.writeUTF("El número secreto es mayor que " + numJug);
               break;
@@ -47,9 +52,22 @@ public class JugadorThread extends Thread {
           }
 
         } else {
-          salida.writeUTF("Turno del jugador" + dealer.getTurno());
-          dealer.waitTurno(turnoJug);
-          salida.writeInt(1);
+          salida.writeUTF("Turno del jugador" + turnoActual);
+          dealer.waitForNum();
+
+          switch (dealer.comprobarNumero(numJug, turnoActual)) {
+            case 1:
+              salida.writeUTF("El número secreto es mayor que " + numJug);
+              break;
+            case -1:
+              salida.writeUTF("El número secreto es menor que " + numJug);
+              break;
+            case 0:
+              salida.writeUTF("¡El jugador" + turnoActual + " adivinado el número secreto! (" + numJug + ")");
+              JugadorThread.fin = true;
+              break;
+          }
+
         }
 
         salida.writeBoolean(JugadorThread.fin);
