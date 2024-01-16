@@ -8,9 +8,6 @@ public class JugadorThread extends Thread {
   Socket socket;
   private int turnoJug;
   private Dealer dealer;
-  private static boolean fin = false;
-
-  private static int numJug;
 
   public JugadorThread(Socket socket, int turnoJug, Dealer dealer) {
     this.socket = socket;
@@ -34,20 +31,20 @@ public class JugadorThread extends Thread {
 
         if (turnoJug == turnoActual) {
           salida.writeUTF("Tu turno");
-          JugadorThread.numJug = entrada.readInt();
+          dealer.setNumJug(entrada.readInt());
           dealer.notificarNum();
           dealer.aumentarTurno();
 
-          switch (dealer.comprobarNumero(numJug, turnoActual)) {
+          switch (dealer.comprobarNumero(dealer.getNumJug(), turnoActual)) {
             case 1:
-              salida.writeUTF("El número secreto es mayor que " + numJug);
+              salida.writeUTF("El número secreto es mayor que " + dealer.getNumJug());
               break;
             case -1:
-              salida.writeUTF("El número secreto es menor que " + numJug);
+              salida.writeUTF("El número secreto es menor que " + dealer.getNumJug());
               break;
             case 0:
               salida.writeUTF("¡Has adivinado el número secreto!");
-              JugadorThread.fin = true;
+              dealer.setFinPartida(true);
               break;
           }
 
@@ -55,24 +52,25 @@ public class JugadorThread extends Thread {
           salida.writeUTF("Turno del jugador" + turnoActual);
           dealer.waitForNum();
 
-          switch (dealer.comprobarNumero(numJug, turnoActual)) {
+          switch (dealer.comprobarNumero(dealer.getNumJug(), turnoActual)) {
             case 1:
-              salida.writeUTF("El número secreto es mayor que " + numJug);
+              salida.writeUTF("El número secreto es mayor que " + dealer.getNumJug());
               break;
             case -1:
-              salida.writeUTF("El número secreto es menor que " + numJug);
+              salida.writeUTF("El número secreto es menor que " + dealer.getNumJug());
               break;
             case 0:
-              salida.writeUTF("¡El jugador" + turnoActual + " adivinado el número secreto! (" + numJug + ")");
-              JugadorThread.fin = true;
+              salida
+                  .writeUTF("¡El jugador" + turnoActual + " adivinado el número secreto! (" + dealer.getNumJug() + ")");
+              dealer.setFinPartida(true);
               break;
           }
 
         }
 
-        salida.writeBoolean(JugadorThread.fin);
+        salida.writeBoolean(dealer.isFinPartida());
 
-      } while (!JugadorThread.fin);
+      } while (!dealer.isFinPartida());
 
       System.out.println("Se acabó el juego");
 
