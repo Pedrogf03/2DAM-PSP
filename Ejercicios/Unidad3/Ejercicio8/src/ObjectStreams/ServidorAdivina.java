@@ -1,10 +1,9 @@
-package ObjectStreams;
+package objectStreams;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class ServidorAdivina {
 
@@ -15,7 +14,6 @@ public class ServidorAdivina {
 
   private Dealer dealer;
   private ArrayList<JugadorThread> jugadores;
-  private int secretNum;
 
   // Constructor to allocate a ServerSocket listening at the given port.
   public ServidorAdivina() {
@@ -25,8 +23,7 @@ public class ServidorAdivina {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    secretNum = new Random().nextInt(101);
-    dealer = new Dealer(secretNum);
+    dealer = new Dealer();
     jugadores = new ArrayList<>();
   }
 
@@ -47,7 +44,7 @@ public class ServidorAdivina {
     }
 
     System.out.println("JUEGO INICIADO");
-    System.out.println("El número secreto es: " + secretNum);
+    System.out.println("El número secreto es: " + dealer.getNumSecreto());
 
   }
 

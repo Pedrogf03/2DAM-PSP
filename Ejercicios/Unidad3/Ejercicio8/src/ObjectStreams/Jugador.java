@@ -1,4 +1,4 @@
-package ObjectStreams;
+package objectStreams;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,6 +30,7 @@ public class Jugador {
         if (turnoActual == turno) {
           int num = sc.nextInt();
           salida.writeInt(num);
+          salida.flush();
         }
 
         System.out.println(entrada.readUTF());
@@ -39,6 +40,7 @@ public class Jugador {
       } while (!fin);
 
       salida.writeInt(0);
+      salida.flush();
 
     } catch (IOException e) {
       System.err.println("No puede establer canales de E/S para la conexión");

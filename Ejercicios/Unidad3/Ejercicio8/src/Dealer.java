@@ -1,3 +1,5 @@
+import java.util.Random;
+
 public class Dealer {
 
   private int numSecreto;
@@ -7,8 +9,8 @@ public class Dealer {
 
   private int numJug;
 
-  public Dealer(int num) {
-    this.numSecreto = num;
+  public Dealer() {
+    this.numSecreto = new Random().nextInt(101);
   }
 
   public int comprobarNumero(int numJugado, int turnoJug) throws InterruptedException {
@@ -56,6 +58,10 @@ public class Dealer {
     if (turno > ServidorAdivina.JUGADORES) {
       turno = 1;
     }
+  }
+
+  public int getNumSecreto() {
+    return numSecreto;
   }
 
 }
