@@ -9,42 +9,49 @@ import java.util.Scanner;
 public class Jugador {
   public static void main(String[] args) throws IOException {
 
+    System.out.println("Esperando jugadores...");
+
     try (Socket socketCliente = new Socket("localhost", ServidorAdivina.SERVERPORT);
-        ObjectInputStream entrada = new ObjectInputStream(socketCliente.getInputStream());
         ObjectOutputStream salida = new ObjectOutputStream(socketCliente.getOutputStream());
+        ObjectInputStream entrada = new ObjectInputStream(socketCliente.getInputStream());
         Scanner sc = new Scanner(System.in);) {
 
-      System.out.println("Esperando jugadores...");
+      Datos d = (Datos) entrada.readObject();
 
-      boolean fin = false;
+      System.out.println("Bienvenido, jugador" + d.getTurnoJugador());
 
-      System.out.println(entrada.readUTF());
-      int turno = entrada.readInt();
+      while (!d.isFinDelJuego()) {
 
-      do {
+        System.out.print("Introduce un número: ");
+        int numero = sc.nextInt();
 
-        int turnoActual = entrada.readInt();
+        d.setNumeroJugador(numero);
 
-        System.out.println(entrada.readUTF());
+        salida.writeObject(d);
+        salida.flush();
 
-        if (turnoActual == turno) {
-          int num = sc.nextInt();
-          salida.writeInt(num);
-          salida.flush();
+        d = (Datos) entrada.readObject();
+
+        switch (d.getNumeroJugador()) {
+        case -1:
+          System.out.println("El numero secreto es menor que " + numero);
+          break;
+        case 1:
+          System.out.println("El numero secreto es mayor que " + numero);
+          break;
+        case 0:
+          System.out.println("Has adivinado el número secreto");
+          break;
         }
 
-        System.out.println(entrada.readUTF());
+      }
 
-        fin = entrada.readBoolean();
-
-      } while (!fin);
-
-      salida.writeInt(0);
-      salida.flush();
+      System.out.println("Un jugador ha adivinado el número secreto. Fin de la partida");
 
     } catch (IOException e) {
-      System.err.println("No puede establer canales de E/S para la conexión");
-      System.exit(-1);
+      e.printStackTrace();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
     }
 
   }

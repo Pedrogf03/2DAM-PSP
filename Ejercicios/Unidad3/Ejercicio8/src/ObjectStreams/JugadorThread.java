@@ -8,91 +8,50 @@ import java.net.Socket;
 public class JugadorThread extends Thread {
 
   Socket socket;
-  private int turnoJug;
+  private int turnoJugador;
   private Dealer dealer;
 
-  public JugadorThread(Socket socket, int turnoJug, Dealer dealer) {
+  public JugadorThread(Socket socket, int turnoJugador, Dealer dealer) {
     this.socket = socket;
-    this.turnoJug = turnoJug;
+    this.turnoJugador = turnoJugador;
     this.dealer = dealer;
   }
 
   @Override
   public void run() {
 
-    try (ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream());
-        ObjectOutputStream salida = new ObjectOutputStream(socket.getOutputStream())) {
+    try (ObjectOutputStream salida = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream());) {
 
-      salida.writeUTF("Bienvenido Jugador" + turnoJug);
+      Datos d = new Datos(turnoJugador);
+      d.setTurnoActual(dealer.getTurnoActual());
+
+      salida.writeObject(d);
       salida.flush();
-      salida.writeInt(turnoJug);
-      salida.flush();
 
-      do {
+      while (!dealer.isFinDelJuego()) {
 
-        int turnoActual = dealer.getTurno();
-        salida.writeInt(turnoActual);
-        salida.flush();
+        d = (Datos) entrada.readObject();
 
-        if (turnoJug == turnoActual) {
-          salida.writeUTF("Tu turno");
-          salida.flush();
-          dealer.setNumJug(entrada.readInt());
-          dealer.notificarNum();
-          dealer.aumentarTurno();
+        d.setNumeroJugador(dealer.comprobarNumero(d.getNumeroJugador(), turnoJugador));
 
-          switch (dealer.comprobarNumero(dealer.getNumJug(), turnoActual)) {
-          case 1:
-            salida.writeUTF("El número secreto es mayor que " + dealer.getNumJug());
-            salida.flush();
-            break;
-          case -1:
-            salida.writeUTF("El número secreto es menor que " + dealer.getNumJug());
-            salida.flush();
-            break;
-          case 0:
-            salida.writeUTF("¡Has adivinado el número secreto!");
-            salida.flush();
-            dealer.setFinPartida(true);
-            break;
-          }
-
-        } else {
-          salida.writeUTF("Turno del jugador" + turnoActual);
-          salida.flush();
-          dealer.waitForNum();
-
-          switch (dealer.comprobarNumero(dealer.getNumJug(), turnoActual)) {
-          case 1:
-            salida.writeUTF("El número secreto es mayor que " + dealer.getNumJug());
-            salida.flush();
-            break;
-          case -1:
-            salida.writeUTF("El número secreto es menor que " + dealer.getNumJug());
-            salida.flush();
-            break;
-          case 0:
-            salida.writeUTF("¡El jugador" + turnoActual + " adivinado el número secreto! (" + dealer.getNumJug() + ")");
-            salida.flush();
-            dealer.setFinPartida(true);
-            break;
-          }
-
+        if (d.getNumeroJugador() == 0) {
+          dealer.setFinDelJuego(true);
         }
 
-        salida.writeBoolean(dealer.isFinPartida());
+        d.setFinDelJuego(dealer.isFinDelJuego());
+
+        salida.writeObject(d);
         salida.flush();
 
-      } while (!dealer.isFinPartida());
-
-      System.out.println("Se acabó el juego");
-
-      entrada.readInt();
+      }
 
     } catch (IOException e) {
       System.out.println("IOException: " + e.getMessage());
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
     } catch (InterruptedException e) {
-      return;
+      e.printStackTrace();
     }
 
   }

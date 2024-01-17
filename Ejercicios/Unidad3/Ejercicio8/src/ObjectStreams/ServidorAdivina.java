@@ -10,7 +10,7 @@ public class ServidorAdivina {
   private ServerSocket server;
 
   final static int SERVERPORT = 4444;
-  final static int JUGADORES = 5;
+  final static int JUGADORES = 3;
 
   private Dealer dealer;
   private ArrayList<JugadorThread> jugadores;

@@ -36,16 +36,16 @@ public class JugadorThread extends Thread {
           dealer.aumentarTurno();
 
           switch (dealer.comprobarNumero(dealer.getNumJug(), turnoActual)) {
-            case 1:
-              salida.writeUTF("El número secreto es mayor que " + dealer.getNumJug());
-              break;
-            case -1:
-              salida.writeUTF("El número secreto es menor que " + dealer.getNumJug());
-              break;
-            case 0:
-              salida.writeUTF("¡Has adivinado el número secreto!");
-              dealer.setFinPartida(true);
-              break;
+          case 1:
+            salida.writeUTF("El número secreto es mayor que " + dealer.getNumJug());
+            break;
+          case -1:
+            salida.writeUTF("El número secreto es menor que " + dealer.getNumJug());
+            break;
+          case 0:
+            salida.writeUTF("¡Has adivinado el número secreto!");
+            dealer.setFinPartida(true);
+            break;
           }
 
         } else {
@@ -53,17 +53,16 @@ public class JugadorThread extends Thread {
           dealer.waitForNum();
 
           switch (dealer.comprobarNumero(dealer.getNumJug(), turnoActual)) {
-            case 1:
-              salida.writeUTF("El número secreto es mayor que " + dealer.getNumJug());
-              break;
-            case -1:
-              salida.writeUTF("El número secreto es menor que " + dealer.getNumJug());
-              break;
-            case 0:
-              salida
-                  .writeUTF("¡El jugador" + turnoActual + " adivinado el número secreto! (" + dealer.getNumJug() + ")");
-              dealer.setFinPartida(true);
-              break;
+          case 1:
+            salida.writeUTF("El número secreto es mayor que " + dealer.getNumJug());
+            break;
+          case -1:
+            salida.writeUTF("El número secreto es menor que " + dealer.getNumJug());
+            break;
+          case 0:
+            salida.writeUTF("¡El jugador" + turnoActual + " adivinado el número secreto! (" + dealer.getNumJug() + ")");
+            dealer.setFinPartida(true);
+            break;
           }
 
         }
