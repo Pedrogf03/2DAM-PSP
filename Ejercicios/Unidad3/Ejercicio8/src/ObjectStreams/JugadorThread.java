@@ -24,7 +24,6 @@ public class JugadorThread extends Thread {
         ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream());) {
 
       Datos d = new Datos(turnoJugador);
-      d.setTurnoActual(dealer.getTurnoActual());
 
       salida.writeObject(d);
       salida.flush();
