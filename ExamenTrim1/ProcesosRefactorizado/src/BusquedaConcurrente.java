@@ -16,7 +16,7 @@ public class BusquedaConcurrente {
       BusquedaConcurrente bc = new BusquedaConcurrente(args);
       bc.leerRespuesta(bc.ejecutarProcesos());
     } catch (BusquedaConcurrenteException e) {
-      e.printMsg();
+      System.out.println(e.getMessage());
     }
 
   }
@@ -30,17 +30,17 @@ public class BusquedaConcurrente {
     Map<Integer, ArrayList<File>> params = new LinkedHashMap<>(); // Guardo en un mapa como clave el número y como valor una lista de todos los ficheros que deben buscar ese numero.
 
     if (args.length < 3) {
-      throw new BusquedaConcurrenteException("Error. El número de parámetros no es el esperado.");
+      throw new BusquedaConcurrenteException("Error. El número de parámetros no es el esperado." + "\nUso correcto -n <numero> <archivo> [<archivo>...] [-n <numero> <archivo>...]");
     }
 
     if (!args[0].equals("-n")) {
-      throw new BusquedaConcurrenteException("Error. Se esperaba '-n' al inicio.");
+      throw new BusquedaConcurrenteException("Error. Se esperaba '-n' al inicio." + "\nUso correcto -n <numero> <archivo> [<archivo>...] [-n <numero> <archivo>...]");
     }
 
     try {
       Integer.parseInt(args[1]);
     } catch (NumberFormatException e) {
-      throw new BusquedaConcurrenteException("Error. Se esperaba un número en el segundo argumento.");
+      throw new BusquedaConcurrenteException("Error. Se esperaba un número en el segundo argumento." + "\nUso correcto -n <numero> <archivo> [<archivo>...] [-n <numero> <archivo>...]");
     }
 
     params.put(Integer.parseInt(args[1]), new ArrayList<>());
@@ -55,9 +55,9 @@ public class BusquedaConcurrente {
           num = Integer.parseInt(args[i + 1]);
           params.put(num, new ArrayList<>());
         } catch (NumberFormatException e) {
-          throw new BusquedaConcurrenteException("Error. Se esperaba un número tras un '-n'.");
+          throw new BusquedaConcurrenteException("Error. Se esperaba un número tras un '-n'." + "\nUso correcto -n <numero> <archivo> [<archivo>...] [-n <numero> <archivo>...]");
         } catch (IndexOutOfBoundsException e) {
-          throw new BusquedaConcurrenteException("Error. Se esperaba un número tras un '-n'.");
+          throw new BusquedaConcurrenteException("Error. Se esperaba un número tras un '-n'." + "\nUso correcto -n <numero> <archivo> [<archivo>...] [-n <numero> <archivo>...]");
         }
         break;
       default:
