@@ -29,9 +29,7 @@ public class Dealer {
   public synchronized int comprobarNumero(int numero, int turnoJugador) throws InterruptedException {
 
     while (turnoJugador != turnoActual) {
-      System.out.println("El jugador" + turnoActual + " está pensando su número...");
-      wait();
-      System.out.println("El jugador" + turnoActual + " ha puesto el número " + numero);
+      esperarTurno(turnoJugador);
     }
 
     turnoActual++;
@@ -39,22 +37,24 @@ public class Dealer {
       turnoActual = 1;
     }
 
-    System.out.println("Tu turno, jugador" + turnoJugador);
-
     if (numero > numeroSecreto) {
-      System.out.println("El numero secreto es menor que " + numero);
       notifyAll();
       return -1;
     } else if (numero < numeroSecreto) {
-      System.out.println("El numero secreto es mayor que " + numero);
       notifyAll();
       return 1;
     } else {
-      System.out.println("El jugador" + turnoJugador + " ha adivinado el número secreto");
+      finDelJuego = true;
       notifyAll();
       return 0;
     }
 
+  }
+
+  public synchronized void esperarTurno(int turnoJugador) throws InterruptedException {
+    if (turnoJugador != turnoActual) {
+      wait();
+    }
   }
 
   public boolean isFinDelJuego() {

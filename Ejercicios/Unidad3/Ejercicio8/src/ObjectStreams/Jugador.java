@@ -22,27 +22,38 @@ public class Jugador {
 
       while (!d.isFinDelJuego()) {
 
-        System.out.print("Introduce un número: ");
-        int numero = sc.nextInt();
+        if (d.getTurnoJugador() == d.getTurnoActual()) {
 
-        d.setNumeroJugador(numero);
+          System.out.println("Tu turno");
+          System.out.print("Introduce un número: ");
+          int numero = sc.nextInt();
 
-        salida.writeObject(d);
-        salida.flush();
+          d.setNumeroJugador(numero);
+
+          salida.writeObject(d);
+          salida.flush();
+
+          d = (Datos) entrada.readObject();
+
+          switch (d.getNumeroJugador()) {
+          case -1:
+            System.out.println("El numero secreto es menor que " + numero);
+            break;
+          case 1:
+            System.out.println("El numero secreto es mayor que " + numero);
+            break;
+          case 0:
+            System.out.println("Has adivinado el número secreto");
+            break;
+          }
+
+        } else {
+
+          System.out.println("Turno del jugador" + d.getTurnoActual());
+
+        }
 
         d = (Datos) entrada.readObject();
-
-        switch (d.getNumeroJugador()) {
-        case -1:
-          System.out.println("El numero secreto es menor que " + numero);
-          break;
-        case 1:
-          System.out.println("El numero secreto es mayor que " + numero);
-          break;
-        case 0:
-          System.out.println("Has adivinado el número secreto");
-          break;
-        }
 
       }
 

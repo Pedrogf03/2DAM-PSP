@@ -24,20 +24,31 @@ public class JugadorThread extends Thread {
         ObjectInputStream entrada = new ObjectInputStream(socket.getInputStream());) {
 
       Datos d = new Datos(turnoJugador);
+      d.setTurnoActual(dealer.getTurnoActual());
+
+      System.out.println(d.getTurnoActual());
 
       salida.writeObject(d);
       salida.flush();
 
       while (!dealer.isFinDelJuego()) {
 
-        d = (Datos) entrada.readObject();
+        if (turnoJugador == dealer.getTurnoActual()) {
 
-        d.setNumeroJugador(dealer.comprobarNumero(d.getNumeroJugador(), turnoJugador));
+          d = (Datos) entrada.readObject();
 
-        if (d.getNumeroJugador() == 0) {
-          dealer.setFinDelJuego(true);
+          d.setNumeroJugador(dealer.comprobarNumero(d.getNumeroJugador(), turnoJugador));
+
+          salida.writeObject(d);
+          salida.flush();
+
+        } else {
+
+          dealer.esperarTurno(turnoJugador);
+
         }
 
+        d.aumentarTurno();
         d.setFinDelJuego(dealer.isFinDelJuego());
 
         salida.writeObject(d);

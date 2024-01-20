@@ -6,6 +6,7 @@ public class Datos implements Serializable {
 
   private int turnoJugador;
   private int numeroJugador;
+  private int turnoActual;
 
   private boolean finDelJuego = false;
 
@@ -35,6 +36,21 @@ public class Datos implements Serializable {
 
   public void setFinDelJuego(boolean finDelJuego) {
     this.finDelJuego = finDelJuego;
+  }
+
+  public int getTurnoActual() {
+    return turnoActual;
+  }
+
+  public void setTurnoActual(int turnoActual) {
+    this.turnoActual = turnoActual;
+  }
+
+  public void aumentarTurno() {
+    turnoActual++;
+    if (turnoActual > ServidorAdivina.JUGADORES) {
+      turnoActual = 1;
+    }
   }
 
 }
