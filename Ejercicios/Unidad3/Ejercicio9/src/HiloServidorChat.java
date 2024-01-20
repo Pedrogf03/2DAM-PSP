@@ -1,14 +1,17 @@
-import java.io.*;
-import java.net.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 
 public class HiloServidorChat extends Thread {
-  DataInputStream fentrada;
-  Socket socket = null;
-  ComunHilos comun;
+  private DataInputStream fentrada;
+  private Socket socket = null;
+  private ComunHilos comun;
 
   public HiloServidorChat(Socket s, ComunHilos comun) {
     this.socket = s;
     this.comun = comun;
+
     try {
       // CREO FLUJO DE entrada para leer los mensajes
       fentrada = new DataInputStream(socket.getInputStream());
@@ -16,10 +19,11 @@ public class HiloServidorChat extends Thread {
       System.out.println("ERROR DE E/S");
       e.printStackTrace();
     }
+
   }// ..
 
   public void run() {
-    System.out.println("NUMERO DE CONEXIONES ACTUALES: " + comun.getACTUALES());
+    System.out.println("NUMERO DE CONEXIONES ACTUALES: " + comun.getActuales());
 
     // NADA MAS CONECTARSE LE ENVIO TODOS LOS MENSAJES
     String texto = comun.getMensajes();
@@ -30,8 +34,8 @@ public class HiloServidorChat extends Thread {
       try {
         cadena = fentrada.readUTF();
         if (cadena.trim().equals("*")) {// EL CLIENTE SE DESCONECTA
-          comun.setACTUALES(comun.getACTUALES() - 1);
-          System.out.println("NUMERO DE CONEXIONES ACTUALES: " + comun.getACTUALES());
+          comun.setActuales(comun.getActuales() - 1);
+          System.out.println("NUMERO DE CONEXIONES Actuales: " + comun.getActuales());
           break;
         }
         comun.setMensajes(comun.getMensajes() + cadena + "\n");
@@ -55,7 +59,7 @@ public class HiloServidorChat extends Thread {
   private void EnviarMensajesaTodos(String texto) {
     int i;
     // recorremos tabla de sockets para enviarles los mensajes
-    for (i = 0; i < comun.getCONEXIONES(); i++) {
+    for (i = 0; i < comun.getConexiones(); i++) {
       Socket s1 = comun.getElementoTabla(i);
       if (!s1.isClosed()) {
         try {

@@ -1,39 +1,40 @@
 import java.net.Socket;
 
 public class ComunHilos {
-  int CONEXIONES; //N� DE CONEXIONES TOTALES, OCUPADAS EN EL ARRAY
-  int ACTUALES; //N�MERO DE CONEXIONES ACTUALES
-  int MAXIMO; //M�XIMO DE CONEXIONES PERMITIDAS	
-  Socket tabla[] = new Socket[MAXIMO];// SOCKETS CONECTADOS
-  String mensajes; //MENSAJES DEL CHAT
+  private int conexiones; //Nº DE CONEXIONES TOTALES, OCUPADAS EN EL ARRAY
+  private int actuales; //NÚMERO DE CONEXIONES ACTUALES
+  private int maximo; //MÁXIMO DE CONEXIONES PERMITIDAS	
+  private Socket tabla[] = new Socket[maximo];// SOCKETS CONECTADOS
+  private String mensajes; //MENSAJES DEL CHAT
 
-  public ComunHilos(int maximo, int actuales, int conexiones,
-      Socket[] tabla) {
-    MAXIMO = maximo;
-    ACTUALES = actuales;
-    CONEXIONES = conexiones;
+  public ComunHilos(int maximo, int actuales, int conexiones, Socket[] tabla) {
+
+    this.maximo = maximo;
+    this.actuales = actuales;
+    this.conexiones = conexiones;
     this.tabla = tabla;
-    mensajes = "";
+    this.mensajes = "";
+
   }
 
   public ComunHilos() {
     super();
   }
 
-  public int getMAXIMO() {
-    return MAXIMO;
+  public int getMaxmino() {
+    return maximo;
   }
 
-  public void setMAXIMO(int maximo) {
-    MAXIMO = maximo;
+  public void setMaximo(int maximo) {
+    this.maximo = maximo;
   }
 
-  public int getCONEXIONES() {
-    return CONEXIONES;
+  public int getConexiones() {
+    return conexiones;
   }
 
-  public synchronized void setCONEXIONES(int conexiones) {
-    CONEXIONES = conexiones;
+  public synchronized void setConexiones(int conexiones) {
+    this.conexiones = conexiones;
   }
 
   public String getMensajes() {
@@ -44,12 +45,12 @@ public class ComunHilos {
     this.mensajes = mensajes;
   }
 
-  public int getACTUALES() {
-    return ACTUALES;
+  public int getActuales() {
+    return actuales;
   }
 
-  public synchronized void setACTUALES(int actuales) {
-    ACTUALES = actuales;
+  public synchronized void setActuales(int actuales) {
+    this.actuales = actuales;
   }
 
   public synchronized void addTabla(Socket s, int i) {
