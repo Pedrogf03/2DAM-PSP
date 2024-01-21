@@ -26,8 +26,6 @@ public class JugadorThread extends Thread {
       Datos d = new Datos(turnoJugador);
       d.setTurnoActual(dealer.getTurnoActual());
 
-      System.out.println(d.getTurnoActual());
-
       salida.writeObject(d);
       salida.flush();
 
@@ -48,10 +46,14 @@ public class JugadorThread extends Thread {
 
         }
 
-        d.aumentarTurno();
+        d.setTurnoActual(dealer.getTurnoActual());
         d.setFinDelJuego(dealer.isFinDelJuego());
 
-        salida.writeObject(d);
+        // Crear un nuevo objeto Datos con los valores actualizados
+        Datos dActualizado = new Datos(d);
+
+        // Enviar el nuevo objeto Datos al cliente
+        salida.writeObject(dActualizado);
         salida.flush();
 
       }

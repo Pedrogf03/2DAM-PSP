@@ -14,6 +14,13 @@ public class Datos implements Serializable {
     this.turnoJugador = turnoJugador;
   }
 
+  public Datos(Datos d) {
+    this.turnoJugador = d.turnoJugador;
+    this.numeroJugador = d.numeroJugador;
+    this.turnoActual = d.turnoActual;
+    this.finDelJuego = d.finDelJuego;
+  }
+
   public int getTurnoJugador() {
     return turnoJugador;
   }
@@ -46,11 +53,11 @@ public class Datos implements Serializable {
     this.turnoActual = turnoActual;
   }
 
-  public void aumentarTurno() {
-    turnoActual++;
-    if (turnoActual > ServidorAdivina.JUGADORES) {
-      turnoActual = 1;
-    }
-  }
+  // public void aumentarTurno() {
+  //   turnoActual++;
+  //   if (turnoActual > ServidorAdivina.JUGADORES) {
+  //     turnoActual = 1;
+  //   }
+  // }
 
 }
