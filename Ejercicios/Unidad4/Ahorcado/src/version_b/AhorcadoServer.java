@@ -1,11 +1,8 @@
-package version_a;
+package version_b;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
 import java.util.List;
@@ -21,8 +18,6 @@ public class AhorcadoServer implements Runnable {
   private List<String> palabras;
   private int intentos;
 
-  private AhorcadoProtocol protocol;
-
   public AhorcadoServer() throws AhorcadoException {
 
     try {
@@ -33,7 +28,6 @@ public class AhorcadoServer implements Runnable {
       timeout = Integer.parseInt(conf.getProperty("TIMEOUT"));
       intentos = Integer.parseInt(conf.getProperty("TRIES"));
       palabras = Arrays.asList(conf.getProperty("WORDS").split(","));
-      protocol = new AhorcadoProtocol(palabras, intentos);
     } catch (IOException e) {
       throw new AhorcadoException("Ha ocurrido un error al leer las propiedades del servidor");
     }
@@ -78,38 +72,7 @@ public class AhorcadoServer implements Runnable {
         servidor = server;
         servidor.setSoTimeout(timeout);
         while (true) {
-          try (
-              Socket cliente = servidor.accept();
-              DataInputStream entrada = new DataInputStream(cliente.getInputStream());
-              DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());) {
-
-            String input, output;
-
-            output = protocol.processInput(null);
-            salida.writeUTF(output);
-            salida.flush();
-
-            output = protocol.processInput(null);
-            salida.writeUTF(output);
-
-            while ((input = entrada.readUTF()) != null) {
-              output = protocol.processInput(input);
-              salida.writeUTF(output);
-              salida.flush();
-
-              if (output.contains("¿quieres jugar de nuevo? (S/N)")) {
-                continue;
-              }
-
-              if (output.equals("¡Adios!"))
-                break;
-
-              output = protocol.processInput(input);
-              salida.writeUTF(output);
-
-            }
-
-          }
+          new AhorcadoThread(servidor.accept(), palabras, intentos).start();
         }
       } catch (SocketTimeoutException e) {
         continue;
