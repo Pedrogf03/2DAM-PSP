@@ -57,7 +57,7 @@ public class AhorcadoProtocol {
         respuesta = respuesta + "\n" + palabraJugador.toString();
         estado = Estado.PLAYING;
 
-        if (currentPalabra.equals(palabraJugador.toString())) {
+        if (currentPalabra.equalsIgnoreCase(palabraJugador.toString())) {
           respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
           estado = Estado.END;
         }
@@ -117,7 +117,7 @@ public class AhorcadoProtocol {
 
       boolean isC = false;
 
-      char c = s.charAt(0);
+      char c = s.toLowerCase().charAt(0);
       for (int i = 0; i < currentPalabra.length(); i++) {
         if (currentPalabra.charAt(i) == c) {
           palabraJugador.setCharAt(i, c);
