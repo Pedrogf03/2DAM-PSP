@@ -30,7 +30,7 @@ public class AhorcadoClient {
         if (fromServer.equals("Letra: ")) {
 
           switch (intentos) {
-            case 0:
+            case 5:
               System.out.println("------|");
               System.out.println("|     O");
               System.out.println("|    /|\\");
@@ -38,7 +38,7 @@ public class AhorcadoClient {
               System.out.println("|");
               System.out.println("========");
               break;
-            case 1:
+            case 4:
               System.out.println("------|");
               System.out.println("|     O");
               System.out.println("|    /|\\");
@@ -46,7 +46,7 @@ public class AhorcadoClient {
               System.out.println("|");
               System.out.println("========");
               break;
-            case 2:
+            case 3:
               System.out.println("------|");
               System.out.println("|     O");
               System.out.println("|    /|\\");
@@ -54,7 +54,7 @@ public class AhorcadoClient {
               System.out.println("|");
               System.out.println("========");
               break;
-            case 3:
+            case 2:
               System.out.println("------|");
               System.out.println("|     O");
               System.out.println("|    /|");
@@ -62,7 +62,7 @@ public class AhorcadoClient {
               System.out.println("|");
               System.out.println("========");
               break;
-            case 4:
+            case 1:
               System.out.println("------|");
               System.out.println("|     O");
               System.out.println("|     |");
@@ -70,7 +70,7 @@ public class AhorcadoClient {
               System.out.println("|");
               System.out.println("========");
               break;
-            case 5:
+            case 0:
               System.out.println("------|");
               System.out.println("|     O");
               System.out.println("|");
