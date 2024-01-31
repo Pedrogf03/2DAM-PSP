@@ -56,6 +56,12 @@ public class AhorcadoProtocol {
         }
         respuesta = respuesta + "\n" + palabraJugador.toString();
         estado = Estado.PLAYING;
+
+        if (currentPalabra.equals(palabraJugador.toString())) {
+          respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
+          estado = Estado.END;
+        }
+
       } else {
         if (resultado) {
           respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
