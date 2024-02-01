@@ -6,10 +6,6 @@ import java.util.Random;
 
 public class AhorcadoProtocol {
 
-  public enum Estado {
-    WAITING_GAME, PLAYING, WAITING_LETTER, CHECKING, END
-  }
-
   private int intentos;
 
   private List<String> palabras;
