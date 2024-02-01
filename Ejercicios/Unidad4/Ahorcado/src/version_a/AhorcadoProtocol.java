@@ -40,47 +40,53 @@ public class AhorcadoProtocol {
       estado = Estado.CHECKING;
     } else if (estado == Estado.CHECKING) {
 
-      int longitud = entrada.length();
-      boolean resultado = processGame(entrada);
-
-      if (longitud == 1) {
-        letrasUsadas.add(entrada);
-        if (resultado) {
-          respuesta = "Esa letra está en la palabra secreta\nLetras usadas: ";
-        } else {
-          respuesta = "Esa letra no está en la palabra secreta\nLetras usadas: ";
-          currentIntento++;
-        }
-        for (String s : letrasUsadas) {
-          respuesta = respuesta + s + ", ";
-        }
-        respuesta = respuesta + "\n" + palabraJugador.toString();
+      try {
+        Integer.parseInt(entrada);
         estado = Estado.PLAYING;
+        respuesta = "Introduce una letra o palabra";
+      } catch (NumberFormatException e) {
+        int longitud = entrada.length();
+        boolean resultado = processGame(entrada);
 
-        if (currentPalabra.equalsIgnoreCase(palabraJugador.toString())) {
-          respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
-          estado = Estado.END;
-        }
-
-      } else {
-        if (resultado) {
-          respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
-          estado = Estado.END;
-        } else {
-          respuesta = "Esa no es la palabra secreta\nLetras usadas: ";
+        if (longitud == 1) {
+          letrasUsadas.add(entrada);
+          if (resultado) {
+            respuesta = "Esa letra está en la palabra secreta\nLetras usadas: ";
+          } else {
+            respuesta = "Esa letra no está en la palabra secreta\nLetras usadas: ";
+            currentIntento++;
+          }
           for (String s : letrasUsadas) {
             respuesta = respuesta + s + ", ";
           }
           respuesta = respuesta + "\n" + palabraJugador.toString();
           estado = Estado.PLAYING;
-          currentIntento++;
-        }
-      }
 
-      if (currentIntento == intentos) {
-        respuesta = "Lo siento, te has quedado sin intentos, la palabra era " + currentPalabra
-            + " ¿quieres jugar de nuevo? (S/N)";
-        estado = Estado.END;
+          if (currentPalabra.equalsIgnoreCase(palabraJugador.toString())) {
+            respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
+            estado = Estado.END;
+          }
+
+        } else {
+          if (resultado) {
+            respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
+            estado = Estado.END;
+          } else {
+            respuesta = "Esa no es la palabra secreta\nLetras usadas: ";
+            for (String s : letrasUsadas) {
+              respuesta = respuesta + s + ", ";
+            }
+            respuesta = respuesta + "\n" + palabraJugador.toString();
+            estado = Estado.PLAYING;
+            currentIntento++;
+          }
+        }
+
+        if (currentIntento == intentos) {
+          respuesta = "Lo siento, te has quedado sin intentos, la palabra era " + currentPalabra
+              + " ¿quieres jugar de nuevo? (S/N)";
+          estado = Estado.END;
+        }
       }
 
     } else if (estado == Estado.END) {
@@ -119,7 +125,7 @@ public class AhorcadoProtocol {
 
       char c = s.toLowerCase().charAt(0);
       for (int i = 0; i < currentPalabra.length(); i++) {
-        if (currentPalabra.charAt(i) == c) {
+        if (currentPalabra.toLowerCase().charAt(i) == c) {
           palabraJugador.setCharAt(i, c);
           isC = true;
         }
