@@ -40,11 +40,11 @@ public class AhorcadoThread extends Thread {
         salida.writeUTF(output);
         salida.flush();
 
-        if (output.contains("¿quieres jugar de nuevo? (S/N)")) {
+        if (output.contains("lose") || output.contains("win")) {
           continue;
         }
 
-        if (output.equals("¡Adios!"))
+        if (output.contains("bye"))
           break;
 
         output = protocol.processInput(input);
@@ -53,7 +53,11 @@ public class AhorcadoThread extends Thread {
       }
 
     } catch (IOException e) {
-      e.printStackTrace();
+      try {
+        throw new AhorcadoException("No se puede conectar con el cliente.");
+      } catch (AhorcadoException aex) {
+        System.out.println(aex.getMessage());
+      }
     }
   }
 }

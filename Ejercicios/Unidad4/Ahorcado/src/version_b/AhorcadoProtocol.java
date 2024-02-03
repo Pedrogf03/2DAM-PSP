@@ -29,69 +29,65 @@ public class AhorcadoProtocol {
     String respuesta = null;
 
     if (estado == Estado.WAITING_GAME) {
-      respuesta = "¡Bienvenido al juego del ahorcado!";
+      respuesta = "waiting_game";
       estado = Estado.PLAYING;
     } else if (estado == Estado.PLAYING) {
-      respuesta = "Letra: ";
+      respuesta = "playing";
       estado = Estado.CHECKING;
     } else if (estado == Estado.CHECKING) {
 
-      try {
-        Integer.parseInt(entrada);
-        estado = Estado.PLAYING;
-        respuesta = "Introduce una letra o palabra";
-      } catch (NumberFormatException e) {
-        int longitud = entrada.length();
-        boolean resultado = processGame(entrada);
+      int longitud = entrada.length();
+      boolean resultado = processGame(entrada);
 
-        if (longitud == 1) {
-          letrasUsadas.add(entrada);
-          if (resultado) {
-            respuesta = "Esa letra está en la palabra secreta\nLetras usadas: ";
-          } else {
-            respuesta = "Esa letra no está en la palabra secreta\nLetras usadas: ";
-            currentIntento++;
-          }
-          for (String s : letrasUsadas) {
-            respuesta = respuesta + s + ", ";
-          }
-          respuesta = respuesta + "\n" + palabraJugador.toString();
-          estado = Estado.PLAYING;
-
-          if (currentPalabra.equalsIgnoreCase(palabraJugador.toString())) {
-            respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
-            estado = Estado.END;
-          }
-
+      if (longitud == 1) {
+        letrasUsadas.add(entrada);
+        if (resultado) {
+          respuesta = "cheking;letra;true;";
         } else {
-          if (resultado) {
-            respuesta = "¡Has adivinado la palabra!, ¿quieres jugar de nuevo? (S/N)";
-            estado = Estado.END;
-          } else {
-            respuesta = "Esa no es la palabra secreta\nLetras usadas: ";
-            for (String s : letrasUsadas) {
-              respuesta = respuesta + s + ", ";
-            }
-            respuesta = respuesta + "\n" + palabraJugador.toString();
-            estado = Estado.PLAYING;
-            currentIntento++;
-          }
+          respuesta = "cheking;letra;false;";
+          currentIntento++;
+        }
+        for (String s : letrasUsadas) {
+          respuesta = respuesta + s + ",";
         }
 
-        if (currentIntento == intentos) {
-          respuesta = "Lo siento, te has quedado sin intentos, la palabra era " + currentPalabra
-              + " ¿quieres jugar de nuevo? (S/N)";
+        respuesta = respuesta.substring(0, respuesta.length() - 1);
+        respuesta = respuesta + ";" + palabraJugador.toString() + ";" + currentIntento;
+        estado = Estado.PLAYING;
+
+        if (currentPalabra.equalsIgnoreCase(palabraJugador.toString())) {
+          respuesta = "cheking;win";
           estado = Estado.END;
         }
+
+      } else {
+        if (resultado) {
+          respuesta = "cheking;win";
+          estado = Estado.END;
+        } else {
+          currentIntento++;
+          respuesta = "cheking;palabra;false;";
+          for (String s : letrasUsadas) {
+            respuesta = respuesta + s + ",";
+          }
+          respuesta = respuesta.substring(0, respuesta.length() - 1);
+          respuesta = respuesta + ";" + palabraJugador.toString() + ";" + currentIntento;
+          estado = Estado.PLAYING;
+        }
+      }
+
+      if (currentIntento == intentos) {
+        respuesta = "cheking;lose;" + currentPalabra;
+        estado = Estado.END;
       }
 
     } else if (estado == Estado.END) {
       resetGame();
       if (entrada.equalsIgnoreCase("S")) {
-        respuesta = "Se ha escogido una nueva palabra";
+        respuesta = "playing";
         estado = Estado.PLAYING;
-      } else {
-        respuesta = "¡Adios!";
+      } else if (entrada.equalsIgnoreCase("N")) {
+        respuesta = "bye";
         estado = Estado.WAITING_GAME;
       }
     }
