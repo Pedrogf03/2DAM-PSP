@@ -38,129 +38,91 @@ public class AhorcadoClient {
 
       while ((fromServer = entrada.readUTF()) != null) {
 
-        if (fromServer.contains("waiting_game")) {
+        String[] res = fromServer.split(";");
 
-          System.out.println("¡Bienvenido al juego del ahorcado!");
+        if (res[0].equals("waiting_game")) {
 
-        } else if (fromServer.contains("playing")) {
+          System.out.println("¡Bienvenido al juego del ahoracado!");
 
-          switch (intentos) {
-          case 0:
-            System.out.println("------|");
-            System.out.println("|");
-            System.out.println("|");
-            System.out.println("|");
-            System.out.println("|");
-            System.out.println("========");
-            break;
-          case 1:
-            System.out.println("------|");
-            System.out.println("|     O");
-            System.out.println("|     ");
-            System.out.println("|");
-            System.out.println("|");
-            System.out.println("========");
-            break;
-          case 2:
-            System.out.println("------|");
-            System.out.println("|     O");
-            System.out.println("|     |");
-            System.out.println("|");
-            System.out.println("|");
-            System.out.println("========");
-            break;
-          case 3:
-            System.out.println("------|");
-            System.out.println("|     O");
-            System.out.println("|    /|");
-            System.out.println("|");
-            System.out.println("|");
-            System.out.println("========");
-            break;
-          case 4:
-            System.out.println("------|");
-            System.out.println("|     O");
-            System.out.println("|    /|\\");
-            System.out.println("|     ");
-            System.out.println("|");
-            System.out.println("========");
-            break;
-          case 5:
-            System.out.println("------|");
-            System.out.println("|     O");
-            System.out.println("|    /|\\");
-            System.out.println("|    / ");
-            System.out.println("|");
-            System.out.println("========");
-            break;
-          case 6:
-            System.out.println("------|");
-            System.out.println("|     O");
-            System.out.println("|    /|\\");
-            System.out.println("|    / \\");
-            System.out.println("|");
-            System.out.println("========");
-            break;
-          }
+        } else if (res[0].equals("playing")) {
 
-          System.out.print("Letra: ");
-          fromUser = sc.nextLine();
-          while (fromUser == null || fromUser == "") {
+          mostrarAhorcado(intentos);
+
+          do {
+            System.out.print("Letra: ");
             fromUser = sc.nextLine();
-          }
+          } while (fromUser == null || fromUser == "");
+
           salida.writeUTF(fromUser);
+          salida.flush();
 
-        } else if (fromServer.contains("cheking")) {
+        } else if (res[0].equals("checking")) {
 
-          if (fromServer.contains("letra")) {
+          if (res[1].equals("letra")) {
 
-            if (fromServer.contains("true")) {
+            if (res[2].equals("true")) {
+
               System.out.println("Esa letra está en la palabra secreta");
-            } else if (fromServer.contains("false")) {
+
+            } else if (res[2].equals("false")) {
+
               System.out.println("Esa letra no está en la palabra secreta");
+
             }
-            String[] res = fromServer.split(";");
+
             System.out.println("Letras usadas: " + res[3]);
-            System.out.println(res[4]);
+            System.out.println(res[4]); // Plabra a adivinar
+            intentos = Integer.parseInt(res[5]); // Intentos usados
 
-            intentos = Integer.parseInt(res[5]);
+          } else if (res[1].equals("palabra")) {
 
-          } else if (fromServer.contains("palabra")) {
+            if (res[2].equals("false")) {
 
-            if (fromServer.contains("false")) {
               System.out.println("Esa no es la palabra secreta");
-            }
-            String[] res = fromServer.split(";");
-            System.out.println("Letras usadas: " + res[3]);
-            System.out.println(res[4]);
+              System.out.println("Letras usadas: " + res[3]);
+              System.out.println(res[4]); // Plabra a adivinar
+              intentos = Integer.parseInt(res[5]); // Intentos usados
 
-            intentos = Integer.parseInt(res[5]);
+            }
 
-          } else if (fromServer.contains("win")) {
-            System.out.println("¡Has adivinado la palabra secreta!, ¿Quieres jugar de nuevo? (S/N)");
-            fromUser = sc.nextLine();
-            while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n"))) {
+          } else if (res[1].equals("win")) {
+
+            System.out.println("¡Has adivinado la palabra secreta!");
+            intentos = 0;
+
+            do {
+              System.out.print("¿Quieres jugar de nuevo? (S/N) ");
               fromUser = sc.nextLine();
-            }
+            } while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n")));
+
             salida.writeUTF(fromUser);
-            if (fromUser.equalsIgnoreCase("s")) {
-              intentos = 0;
-            }
-          } else if (fromServer.contains("lose")) {
-            String palabra = fromServer.split(";")[2];
-            System.out.println("Te quedaste sin intentos, la palabra secreta era " + palabra + ", ¿Quieres jugar de nuevo? (S/N)");
-            fromUser = sc.nextLine();
-            while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n"))) {
+            salida.flush();
+
+          } else if (res[1].equals("lose")) {
+
+            System.out.println("Lo siento, te quedaste sin intentos");
+
+            intentos = Integer.parseInt(res[3]);
+
+            mostrarAhorcado(intentos);
+
+            System.out.println("La palabra era " + res[2]);
+            intentos = 0;
+            do {
+              System.out.print("¿Quieres jugar de nuevo? (S/N)");
               fromUser = sc.nextLine();
-            }
+            } while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n")));
+
             salida.writeUTF(fromUser);
-            if (fromUser.equalsIgnoreCase("s")) {
-              intentos = 0;
-            }
+            salida.flush();
+
           }
 
-        } else if (fromServer.contains("bye")) {
+        } else if (res[0].equals("bye")) {
+
+          System.out.println("¡Adiós!");
           break;
+
         }
 
       }
@@ -176,6 +138,67 @@ public class AhorcadoClient {
       sc.close();
     }
 
+  }
+
+  public static void mostrarAhorcado(int intentos) {
+    switch (intentos) {
+    case 6:
+      System.out.println("------|");
+      System.out.println("|     O");
+      System.out.println("|    /|\\");
+      System.out.println("|    / \\");
+      System.out.println("|");
+      System.out.println("========");
+      break;
+    case 5:
+      System.out.println("------|");
+      System.out.println("|     O");
+      System.out.println("|    /|\\");
+      System.out.println("|    / ");
+      System.out.println("|");
+      System.out.println("========");
+      break;
+    case 4:
+      System.out.println("------|");
+      System.out.println("|     O");
+      System.out.println("|    /|\\");
+      System.out.println("|     ");
+      System.out.println("|");
+      System.out.println("========");
+      break;
+    case 3:
+      System.out.println("------|");
+      System.out.println("|     O");
+      System.out.println("|    /|");
+      System.out.println("|");
+      System.out.println("|");
+      System.out.println("========");
+      break;
+    case 2:
+      System.out.println("------|");
+      System.out.println("|     O");
+      System.out.println("|     |");
+      System.out.println("|");
+      System.out.println("|");
+      System.out.println("========");
+      break;
+    case 1:
+      System.out.println("------|");
+      System.out.println("|     O");
+      System.out.println("|     ");
+      System.out.println("|");
+      System.out.println("|");
+      System.out.println("========");
+      break;
+    case 0:
+      System.out.println("------|");
+      System.out.println("|");
+      System.out.println("|");
+      System.out.println("|");
+      System.out.println("|");
+      System.out.println("========");
+      break;
+    }
   }
 
 }

@@ -20,35 +20,37 @@ public class AhorcadoThread extends Thread {
 
   @Override
   public void run() {
-    try (
-        DataInputStream entrada = new DataInputStream(socket.getInputStream());
-        DataOutputStream salida = new DataOutputStream(socket.getOutputStream());) {
+    try (DataInputStream entrada = new DataInputStream(socket.getInputStream()); DataOutputStream salida = new DataOutputStream(socket.getOutputStream());) {
 
       String input, output;
 
       AhorcadoProtocol protocol = new AhorcadoProtocol(palabras, intentos);
 
+      // Bienvenida
       output = protocol.processInput(null);
       salida.writeUTF(output);
       salida.flush();
 
+      // Letra: 
       output = protocol.processInput(null);
       salida.writeUTF(output);
+      salida.flush();
 
       while ((input = entrada.readUTF()) != null) {
         output = protocol.processInput(input);
         salida.writeUTF(output);
         salida.flush();
 
-        if (output.contains("lose") || output.contains("win")) {
-          continue;
-        }
+        String[] res = output.split(";");
 
-        if (output.contains("bye"))
+        if (res[0].equals("bye")) {
           break;
-
-        output = protocol.processInput(input);
-        salida.writeUTF(output);
+        } else if (res[0].equals("checking") && (res[1].equals("win") || res[1].equals("lose"))) {
+          continue;
+        } else if (!res[0].equals("playing")) {
+          output = protocol.processInput(null);
+          salida.writeUTF(output);
+        }
 
       }
 
