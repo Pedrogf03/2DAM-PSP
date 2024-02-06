@@ -30,7 +30,7 @@ public class AhorcadoProtocol {
 
     if (estado == Estado.WAITING_GAME) {
 
-      respuesta = "waiting_game";
+      respuesta = "bienvenido";
       estado = Estado.PLAYING;
 
     } else if (estado == Estado.PLAYING) {

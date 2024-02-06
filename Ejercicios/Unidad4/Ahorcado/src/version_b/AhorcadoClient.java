@@ -40,7 +40,7 @@ public class AhorcadoClient {
 
         String[] res = fromServer.split(";");
 
-        if (res[0].equals("waiting_game")) {
+        if (res[0].equals("bienvenido")) {
 
           System.out.println("¡Bienvenido al juego del ahoracado!");
 
