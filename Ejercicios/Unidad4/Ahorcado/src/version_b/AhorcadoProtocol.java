@@ -98,8 +98,8 @@ public class AhorcadoProtocol {
     } else if (estado == Estado.END) {
       resetGame();
       if (entrada.equalsIgnoreCase("S")) {
-        respuesta = "reload";
-        estado = Estado.PLAYING;
+        respuesta = "playing";
+        estado = Estado.CHECKING;
       } else if (entrada.equalsIgnoreCase("N")) {
         respuesta = "bye";
         estado = Estado.WAITING_GAME;

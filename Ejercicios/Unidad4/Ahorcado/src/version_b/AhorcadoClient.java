@@ -109,7 +109,7 @@ public class AhorcadoClient {
             System.out.println("La palabra era " + res[2]);
             intentos = 0;
             do {
-              System.out.print("¿Quieres jugar de nuevo? (S/N)");
+              System.out.print("¿Quieres jugar de nuevo? (S/N) ");
               fromUser = sc.nextLine();
             } while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n")));
 
