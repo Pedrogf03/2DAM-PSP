@@ -1,4 +1,4 @@
-package version_b;
+package version_c;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class AhorcadoServer implements Runnable {
       conf.load(new FileInputStream("server.properties"));
       puerto = Integer.parseInt(conf.getProperty("PORT"));
       timeout = Integer.parseInt(conf.getProperty("TIMEOUT"));
-      intentos = 6;
+      intentos = Integer.parseInt(conf.getProperty("TRIES"));
       palabras = Arrays.asList(conf.getProperty("WORDS").split(","));
     } catch (IOException e) {
       throw new AhorcadoException("Ha ocurrido un error al leer las propiedades del servidor");

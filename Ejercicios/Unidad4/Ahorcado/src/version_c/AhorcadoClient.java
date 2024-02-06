@@ -1,4 +1,4 @@
-package version_b;
+package version_c;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -35,17 +35,17 @@ public class AhorcadoClient {
     try (Socket cliente = new Socket(dir, port); DataInputStream entrada = new DataInputStream(cliente.getInputStream()); DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());) {
 
       String fromServer, fromUser;
-      boolean fin = false;
 
-      while (!fin && ((fromServer = entrada.readUTF()) != null)) {
+      while ((fromServer = entrada.readUTF()) != null) {
 
         String[] res = fromServer.split(";");
 
-        switch (res[0]) {
-        case "bienvenido":
+        if (res[0].equals("bienvenido")) {
+
           System.out.println("¡Bienvenido al juego del ahoracado!");
-          break;
-        case "playing":
+
+        } else if (res[0].equals("playing")) {
+
           mostrarAhorcado(intentos);
 
           do {
@@ -55,8 +55,9 @@ public class AhorcadoClient {
 
           salida.writeUTF(fromUser);
           salida.flush();
-          break;
-        case "checking":
+
+        } else if (res[0].equals("checking")) {
+
           if (res[1].equals("letra")) {
 
             if (res[2].equals("true")) {
@@ -116,13 +117,12 @@ public class AhorcadoClient {
             salida.flush();
 
           }
-          break;
-        case "bye":
+
+        } else if (res[0].equals("bye")) {
+
           System.out.println("¡Adiós!");
-          fin = true;
           break;
-        default:
-          break;
+
         }
 
       }
@@ -202,86 +202,3 @@ public class AhorcadoClient {
   }
 
 }
-
-// if (res[0].equals("bienvenido")) {
-
-// } else if (res[0].equals("playing")) {
-
-//   mostrarAhorcado(intentos);
-
-//   do {
-//     System.out.print("Letra: ");
-//     fromUser = sc.nextLine();
-//   } while (fromUser == null || fromUser == "");
-
-//   salida.writeUTF(fromUser);
-//   salida.flush();
-
-// } else if (res[0].equals("checking")) {
-
-//   if (res[1].equals("letra")) {
-
-//     if (res[2].equals("true")) {
-
-//       System.out.println("Esa letra está en la palabra secreta");
-
-//     } else if (res[2].equals("false")) {
-
-//       System.out.println("Esa letra no está en la palabra secreta");
-
-//     }
-
-//     System.out.println("Letras usadas: " + res[3]);
-//     System.out.println(res[4]); // Plabra a adivinar
-//     intentos = Integer.parseInt(res[5]); // Intentos usados
-
-//   } else if (res[1].equals("palabra")) {
-
-//     if (res[2].equals("false")) {
-
-//       System.out.println("Esa no es la palabra secreta");
-//       System.out.println("Letras usadas: " + res[3]);
-//       System.out.println(res[4]); // Plabra a adivinar
-//       intentos = Integer.parseInt(res[5]); // Intentos usados
-
-//     }
-
-//   } else if (res[1].equals("win")) {
-
-//     System.out.println("¡Has adivinado la palabra secreta!");
-//     intentos = 0;
-
-//     do {
-//       System.out.print("¿Quieres jugar de nuevo? (S/N) ");
-//       fromUser = sc.nextLine();
-//     } while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n")));
-
-//     salida.writeUTF(fromUser);
-//     salida.flush();
-
-//   } else if (res[1].equals("lose")) {
-
-//     System.out.println("Lo siento, te quedaste sin intentos");
-
-//     intentos = Integer.parseInt(res[3]);
-
-//     mostrarAhorcado(intentos);
-
-//     System.out.println("La palabra era " + res[2]);
-//     intentos = 0;
-//     do {
-//       System.out.print("¿Quieres jugar de nuevo? (S/N) ");
-//       fromUser = sc.nextLine();
-//     } while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n")));
-
-//     salida.writeUTF(fromUser);
-//     salida.flush();
-
-//   }
-
-// } else if (res[0].equals("bye")) {
-
-//   System.out.println("¡Adiós!");
-//   break;
-
-// }
