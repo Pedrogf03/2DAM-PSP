@@ -111,8 +111,7 @@ public class AhorcadoProtocol {
   }
 
   private void resetGame() {
-    //this.currentPalabra = palabras.get(new Random().nextInt(palabras.size()));
-    this.currentPalabra = "LAN";
+    this.currentPalabra = palabras.get(new Random().nextInt(palabras.size()));
     this.currentIntento = 0;
     String s = "";
     for (int i = 0; i < currentPalabra.length(); i++) {
