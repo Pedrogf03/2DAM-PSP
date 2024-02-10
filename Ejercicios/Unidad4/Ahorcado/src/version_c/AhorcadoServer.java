@@ -16,7 +16,6 @@ public class AhorcadoServer implements Runnable {
   private boolean stop;
   private ServerSocket servidor;
   private List<String> palabras;
-  private int intentos;
 
   public AhorcadoServer() throws AhorcadoException {
 
@@ -26,7 +25,6 @@ public class AhorcadoServer implements Runnable {
       conf.load(new FileInputStream("server.properties"));
       puerto = Integer.parseInt(conf.getProperty("PORT"));
       timeout = Integer.parseInt(conf.getProperty("TIMEOUT"));
-      intentos = Integer.parseInt(conf.getProperty("TRIES"));
       palabras = Arrays.asList(conf.getProperty("WORDS").split(","));
     } catch (IOException e) {
       throw new AhorcadoException("Ha ocurrido un error al leer las propiedades del servidor");
@@ -70,9 +68,12 @@ public class AhorcadoServer implements Runnable {
     while (!stop) {
       try (ServerSocket server = new ServerSocket(puerto);) {
         servidor = server;
-        servidor.setSoTimeout(timeout);
-        while (true) {
-          new AhorcadoThread(servidor.accept(), palabras, intentos).start();
+        //servidor.setSoTimeout(timeout);
+        while (!stop) {
+          Partida partida = new Partida(palabras);
+          for (int i = 0; i < 2; i++) {
+            new JugadorThread(servidor.accept(), i + 1, partida, new AhorcadoProtocol()).start();
+          }
         }
       } catch (SocketTimeoutException e) {
         continue;

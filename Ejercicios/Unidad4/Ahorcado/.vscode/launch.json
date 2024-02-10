@@ -1,0 +1,56 @@
+{
+  // Use IntelliSense para saber los atributos posibles.
+  // Mantenga el puntero para ver las descripciones de los existentes atributos.
+  // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Current File",
+      "request": "launch",
+      "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "AhorcadoClient",
+      "request": "launch",
+      "mainClass": "version_a.AhorcadoClient",
+      "projectName": "Ahorcado_552d16c"
+    },
+    {
+      "type": "java",
+      "name": "AhorcadoServer",
+      "request": "launch",
+      "mainClass": "version_a.AhorcadoServer",
+      "projectName": "Ahorcado_552d16c"
+    },
+    {
+      "type": "java",
+      "name": "AhorcadoClient(1)",
+      "request": "launch",
+      "mainClass": "version_b.AhorcadoClient",
+      "projectName": "Ahorcado_552d16c"
+    },
+    {
+      "type": "java",
+      "name": "AhorcadoServer(1)",
+      "request": "launch",
+      "mainClass": "version_b.AhorcadoServer",
+      "projectName": "Ahorcado_552d16c"
+    },
+    {
+      "type": "java",
+      "name": "AhorcadoClient(2)",
+      "request": "launch",
+      "mainClass": "version_c.AhorcadoClient",
+      "projectName": "Ahorcado_552d16c"
+    },
+    {
+      "type": "java",
+      "name": "AhorcadoServer(2)",
+      "request": "launch",
+      "mainClass": "version_c.AhorcadoServer",
+      "projectName": "Ahorcado_552d16c"
+    }
+  ]
+}

@@ -20,7 +20,8 @@ public class AhorcadoThread extends Thread {
 
   @Override
   public void run() {
-    try (DataInputStream entrada = new DataInputStream(socket.getInputStream()); DataOutputStream salida = new DataOutputStream(socket.getOutputStream());) {
+    try (DataInputStream entrada = new DataInputStream(socket.getInputStream());
+        DataOutputStream salida = new DataOutputStream(socket.getOutputStream());) {
 
       String input, output;
 
