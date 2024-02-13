@@ -58,83 +58,48 @@ public class AhorcadoClient {
 
     while (!finPartida && ((fromServer = entrada.readUTF()) != null)) {
 
-      //System.out.println(fromServer);
+      String[] response = fromServer.split(";");
+      String status = response[0];
 
-      String[] res = fromServer.split(";");
-
-      switch (res[0]) {
+      switch (status) {
       case "waiting":
         System.out.println("Esperando jugadores...");
         break;
-      case "bienvenido":
-        System.out.println("¡Bienvenido al juego el ahorcado!");
+      case "welcome":
+        System.out.println("¡Bienvenido al juego del ahoracado!");
         break;
       case "playing":
-        if (res.length > 1) {
-          if (res[1].equals("letra")) {
-
-            System.out.println("Letras usadas: " + res[3]);
-            System.out.println(res[4]); // Plabra a adivinar
-            intentos = Integer.parseInt(res[5]); // Intentos usados
-
-            mostrarAhorcado();
-
-          } else if (res[1].equals("palabra")) {
-
-            if (res[2].equals("false")) {
-
-              System.out.println("Letras usadas: " + res[3]);
-              System.out.println(res[4]); // Plabra a adivinar
-              intentos = Integer.parseInt(res[5]); // Intentos usados
-
-              mostrarAhorcado();
-
-            }
-          }
+        boolean miTurno = Boolean.parseBoolean(response[1]);
+        if (miTurno) {
+          do {
+            System.out.print("Letra: ");
+            fromUser = scanner.nextLine();
+          } while (fromUser == null || fromUser == "");
+          salida.writeUTF(fromUser);
+          salida.flush();
+        } else {
+          int turnoActual = Integer.parseInt(response[2]);
+          System.out.println("Turno del jugador" + turnoActual);
         }
-        do {
-          System.out.print("Letra: ");
-          fromUser = scanner.nextLine();
-        } while (fromUser == null || fromUser == "");
-        salida.writeUTF(fromUser);
-        salida.flush();
-        break;
-      case "otro_turno":
-        System.out.println("Turno del jugador" + res[1]);
         break;
       case "checking":
-        if (res[1].equals("letra")) {
-
-          if (res[2].equals("true")) {
-
-            System.out.println("Esa letra está en la palabra secreta");
-
-          } else if (res[2].equals("false")) {
-
-            System.out.println("Esa letra no está en la palabra secreta");
-
-          }
-
-          System.out.println("Letras usadas: " + res[3]);
-          System.out.println(res[4]); // Plabra a adivinar
-          intentos = Integer.parseInt(res[5]); // Intentos usados
-
-          mostrarAhorcado();
-
-        } else if (res[1].equals("palabra")) {
-
-          if (res[2].equals("false")) {
-
-            System.out.println("Esa no es la palabra secreta");
-            System.out.println("Letras usadas: " + res[3]);
-            System.out.println(res[4]); // Plabra a adivinar
-            intentos = Integer.parseInt(res[5]); // Intentos usados
-
-            mostrarAhorcado();
-
-          }
-
+        System.out.println(fromServer);
+        processGame(response);
+        if (response.length == 3) {
+          do {
+            System.out.print(" ¿Quieren jugar de nuevo? (S/N) ");
+            fromUser = scanner.nextLine();
+          } while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n")));
+          salida.writeUTF(fromUser);
+          salida.flush();
         }
+        break;
+      case "bye":
+        System.out.println("Un jugador ha decidido que no quiere jugar");
+        finPartida = true;
+        break;
+      case "new_game":
+        System.out.println("Se ha escogido una nueva palabra");
         break;
       default:
         break;
@@ -143,71 +108,56 @@ public class AhorcadoClient {
     }
   }
 
-  // private void checkgame(String[] res, Scanner sc) throws IOException {
-  //   if (res[1].equals("letra")) {
+  private void processGame(String[] response) {
 
-  //     if (res[2].equals("true")) {
+    // response = checking;<win/lose>;<palabra>.lenght == 3
+    if (response.length == 3) {
+      String resultadoPartida = response[1];
+      String palabraCorrecta = response[2];
 
-  //       System.out.println("Esa letra está en la palabra secreta");
+      if (resultadoPartida.equals("lose")) {
+        System.out.print("Os habéis quedado sin intentos, la palabra era " + palabraCorrecta);
+      } else if (resultadoPartida.equals("win")) {
+        System.out.print("¡Habéis adivinado la palabra secreta! (" + palabraCorrecta + ")");
+      }
 
-  //     } else if (res[2].equals("false")) {
+      // response = checking;<letra/palabra>;<true/false>;<letrasUsadas>;<palabra>.lenght == 5 
+    } else if (response.length == 5) {
+      String type = response[1]; // Letra o palabra
+      boolean correcto = Boolean.parseBoolean(response[2]); // Booleano para saber si lo introducido por el usuario es correcto o no
+      String palabrasUsadas = response[3]; // Lista de letras usadas
+      String palabraAdivinar = response[4]; // Palabra  que se esta intenado adivinar
+      intentos = Integer.parseInt(response[5]); // Intentos usados
 
-  //       System.out.println("Esa letra no está en la palabra secreta");
+      if (type.equals("letra")) {
 
-  //     }
+        if (correcto) {
+          System.out.println("Esa letra está en la palabra secreta");
+        } else if (!correcto) {
+          System.out.println("Esa letra no está en la palabra secreta");
+        }
 
-  //     System.out.println("Letras usadas: " + res[3]);
-  //     System.out.println(res[4]); // Plabra a adivinar
-  //     intentos = Integer.parseInt(res[5]); // Intentos usados
+        System.out.println("Letras usadas: " + palabrasUsadas);
+        System.out.println(palabraAdivinar); // Plabra a adivinar
 
-  //     mostrarAhorcado();
+        mostrarAhorcado();
 
-  //   } else if (res[1].equals("palabra")) {
+      } else if (type.equals("palabra")) {
 
-  //     if (res[2].equals("false")) {
+        if (!correcto) {
 
-  //       System.out.println("Esa no es la palabra secreta");
-  //       System.out.println("Letras usadas: " + res[3]);
-  //       System.out.println(res[4]); // Plabra a adivinar
-  //       intentos = Integer.parseInt(res[5]); // Intentos usados
+          System.out.println("Esa no es la palabra secreta");
+          System.out.println("Letras usadas: " + palabrasUsadas);
+          System.out.println(palabraAdivinar); // Plabra a adivinar
 
-  //       mostrarAhorcado();
+          mostrarAhorcado();
 
-  //     }
+        }
 
-  //   } else if (res[1].equals("win")) {
+      }
+    }
 
-  //     System.out.println("¡Has adivinado la palabra secreta!");
-  //     intentos = 0;
-
-  //     do {
-  //       System.out.print("¿Quieres jugar de nuevo? (S/N) ");
-  //       fromUser = sc.nextLine();
-  //     } while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n")));
-
-  //     salida.writeUTF(fromUser);
-  //     salida.flush();
-
-  //   } else if (res[1].equals("lose")) {
-
-  //     System.out.println("Lo siento, te quedaste sin intentos");
-
-  //     intentos = Integer.parseInt(res[3]);
-
-  //     mostrarAhorcado();
-
-  //     System.out.println("La palabra era " + res[2]);
-  //     intentos = 0;
-  //     do {
-  //       System.out.print("¿Quieres jugar de nuevo? (S/N) ");
-  //       fromUser = sc.nextLine();
-  //     } while (fromUser == null || fromUser == "" || (!fromUser.equalsIgnoreCase("s") && !fromUser.equalsIgnoreCase("n")));
-
-  //     salida.writeUTF(fromUser);
-  //     salida.flush();
-
-  //   }
-  // }
+  }
 
   private void mostrarAhorcado() {
     switch (intentos) {

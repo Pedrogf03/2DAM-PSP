@@ -2,54 +2,50 @@ package version_c;
 
 public class AhorcadoProtocol {
 
-  private Estado estado;
+  private Status estado;
   private String mensaje;
 
   public AhorcadoProtocol() {
-    this.estado = Estado.WAITING_PLAYERS;
+    this.estado = Status.WAITING_PLAYERS;
   }
 
-  public Estado getEstado() {
+  public Status getEstado() {
     return this.estado;
   }
 
-  public String procesarMensaje(String e) {
+  public String procesarMensaje(String entrada) {
 
-    if (estado == Estado.WAITING_PLAYERS) {
+    if (estado == Status.WAITING_PLAYERS) {
 
       mensaje = "waiting";
-      estado = Estado.WAITING_GAME;
+      estado = Status.WAITING_GAME;
 
-    } else if (estado == Estado.WAITING_GAME) {
+    } else if (estado == Status.WAITING_GAME) {
 
-      mensaje = "bienvenido";
+      mensaje = "welcome";
+      estado = Status.PLAYING;
 
-      if (e.equals("tu_turno")) {
-        estado = Estado.PLAYING;
-      } else {
-        estado = Estado.WAITING_PLAY;
-      }
-
-    } else if (estado == Estado.PLAYING) {
+    } else if (estado == Status.PLAYING) {
 
       mensaje = "playing";
-      estado = Estado.CHECKING;
+      estado = Status.CHECKING;
 
-    } else if (estado == Estado.WAITING_PLAY) {
+    } else if (estado == Status.CHECKING) {
 
-      mensaje = "otro_turno";
-      if (e.equals("tu_turno")) {
-        mensaje = "playing";
-        estado = Estado.CHECKING;
+      mensaje = "checking;" + entrada;
+      estado = Status.PLAYING;
+      if (entrada.contains("win") || entrada.contains("lose")) {
+        estado = Status.END;
       }
 
-    } else if (estado == Estado.CHECKING) {
-
-      mensaje = "checking;" + e;
-      estado = Estado.WAITING_PLAY;
-
-    } else if (estado == Estado.END) {
-
+    } else if (estado == Status.END) {
+      if (entrada.equalsIgnoreCase("S")) {
+        mensaje = "new_game";
+        estado = Status.PLAYING;
+      } else if (entrada.equalsIgnoreCase("N")) {
+        mensaje = "bye";
+        estado = Status.WAITING_PLAYERS;
+      }
     }
 
     return mensaje;

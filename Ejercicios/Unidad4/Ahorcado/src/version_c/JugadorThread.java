@@ -8,11 +8,13 @@ import java.net.Socket;
 public class JugadorThread extends Thread {
 
   private Socket socket = null;
-  private Partida partida;
+  private Game partida;
   private int turno;
   private AhorcadoProtocol protocolo;
+  private DataInputStream in = null;
+  private DataOutputStream out = null;
 
-  public JugadorThread(Socket socket, int turno, Partida p, AhorcadoProtocol protocol) {
+  public JugadorThread(Socket socket, int turno, Game p, AhorcadoProtocol protocol) {
     this.socket = socket;
     this.partida = p;
     this.turno = turno;
@@ -25,74 +27,75 @@ public class JugadorThread extends Thread {
 
       String input, output;
 
-      // Esperar jugadores
+      in = entrada;
+      out = salida;
+
+      // status: waiting_players -> waiting_game
       output = protocolo.procesarMensaje(null);
-      salida.writeUTF(output);
-      salida.flush();
+      out.writeUTF(output); // waiting
+      out.flush();
 
       partida.esperarJugadores();
 
-      // Bienvenida
-      if (partida.getTurno() == turno) {
-        output = protocolo.procesarMensaje("tu_turno");
-      } else {
-        output = protocolo.procesarMensaje("otro_turno");
-      }
-      salida.writeUTF(output);
-      salida.flush();
+      // status: waiting_game -> playing
+      output = protocolo.procesarMensaje(null);
+      out.writeUTF(output); // bienvenido
+      out.flush();
 
-      //Tu turno / otro turno
-      do {
+      while (!partida.isFin()) {
+
         if (partida.getTurno() == turno) {
-          output = protocolo.procesarMensaje("tu_turno");
-        } else {
-          output = protocolo.procesarMensaje("");
-        }
+          // status: playing -> checking
+          output = protocolo.procesarMensaje(null);
+          out.writeUTF(output + ";true"); // playing;true (true porque es su turno)
+          out.flush();
 
-        if (output.equals("otro_turno")) {
-          output += ";" + partida.getTurno();
-        }
-
-        if (output.equals("playing")) {
-          output += ";" + partida.getResultadoAnterior();
-        }
-        salida.writeUTF(output);
-        salida.flush();
-        if (output.contains("otro_turno")) {
-          partida.esperarTurno(turno);
-        }
-      } while (output.contains("otro_turno"));
-
-      while ((input = entrada.readUTF()) != null) {
-        output = protocolo.procesarMensaje(partida.processGame(input));
-        salida.writeUTF(output);
-        salida.flush();
-
-        //Tu turno / otro turno
-        do {
-          if (partida.getTurno() == turno) {
-            output = protocolo.procesarMensaje("tu_turno");
-          } else {
-            output = protocolo.procesarMensaje("");
-          }
-
-          if (output.equals("otro_turno")) {
-            output += ";" + partida.getTurno();
-          }
-
-          if (output.equals("playing")) {
-            output += ";" + partida.getResultadoAnterior();
-          }
-
-          salida.writeUTF(output);
+          input = in.readUTF();
+          String resultadoJugada = partida.processGame(input);
+          // status: cheking -> playing || if(output.contains("win" or "lose")) then status: cheking -> end
+          output = protocolo.procesarMensaje(resultadoJugada);
+          salida.writeUTF(output); // resultado de procesar la jugada
           salida.flush();
-          if (output.contains("otro_turno")) {
-            partida.esperarTurno(turno);
+        } else {
+          // status: playing -> checking
+          output = protocolo.procesarMensaje(null);
+          out.writeUTF(output + ";false;" + partida.getTurno()); // playing;false;<turnoActual> (false porque NO es su turno)
+          out.flush();
+          partida.esperarTurno(turno);
+          // status: checking -> playing || if(output.contains("win" or "lose")) then status: checking -> end
+          output = protocolo.procesarMensaje(partida.getResultadoAnterior());
+          salida.writeUTF(output); // resultado de procesar la jugada
+          salida.flush();
+        }
+
+        if (output.contains("win") || output.contains("lose")) {
+          input = in.readUTF();
+          // if(input.equals("s")) then status: end -> playing else if(input.equals("n")) then status: end -> waiting_players
+          if (input.equalsIgnoreCase("N")) {
+            partida.finalizar();
           }
-        } while (output.contains("otro_turno"));
+
+          // Cada jugador toma una decisión, pero para continuar se deberá esperar a que el resto también tome la suya.
+          // En el caso de que todos digan que si quieren continuar jugando, se reiniciará el juego, pero con que sólo
+          // un único jugador diga que no quiere continuar, la partida acabará.
+          partida.esperarDecision();
+
+          if (partida.isFin()) {
+            output = protocolo.procesarMensaje("N");
+          } else {
+            output = protocolo.procesarMensaje("S");
+            partida.resetGame();
+          }
+
+          salida.writeUTF(output); // Se le comunica al usuario la decisión tomada.
+          salida.flush();
+
+        }
+
       }
 
     } catch (IOException e) {
+      e.printStackTrace();
       System.out.println("No se puede conectar con el cliente");
     } catch (InterruptedException e) {
       e.printStackTrace();

@@ -12,10 +12,11 @@ import java.util.Scanner;
 public class AhorcadoServer implements Runnable {
 
   private int puerto;
-  private int timeout;
+  // private int timeout;
   private boolean stop;
   private ServerSocket servidor;
   private List<String> palabras;
+  private int maxplayers;
 
   public AhorcadoServer() throws AhorcadoException {
 
@@ -24,7 +25,8 @@ public class AhorcadoServer implements Runnable {
       Properties conf = new Properties();
       conf.load(new FileInputStream("server.properties"));
       puerto = Integer.parseInt(conf.getProperty("PORT"));
-      timeout = Integer.parseInt(conf.getProperty("TIMEOUT"));
+      // timeout = Integer.parseInt(conf.getProperty("TIMEOUT"));
+      maxplayers = Integer.parseInt(conf.getProperty("MAXPLAYERS"));
       palabras = Arrays.asList(conf.getProperty("WORDS").split(","));
     } catch (IOException e) {
       throw new AhorcadoException("Ha ocurrido un error al leer las propiedades del servidor");
@@ -69,8 +71,8 @@ public class AhorcadoServer implements Runnable {
         servidor = server;
         //servidor.setSoTimeout(timeout);
         while (!stop) {
-          Partida partida = new Partida(palabras);
-          for (int i = 0; i < 2; i++) {
+          Game partida = new Game(palabras, maxplayers);
+          for (int i = 0; i < maxplayers; i++) {
             new JugadorThread(servidor.accept(), i + 1, partida, new AhorcadoProtocol()).start();
           }
         }
