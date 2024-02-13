@@ -60,7 +60,6 @@ public class AhorcadoServer implements Runnable {
       start();
     } catch (AhorcadoException e) {
       System.out.println(e.getMessage());
-      return;
     }
   }
 

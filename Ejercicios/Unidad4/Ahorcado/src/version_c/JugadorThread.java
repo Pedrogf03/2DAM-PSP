@@ -93,11 +93,7 @@ public class JugadorThread extends Thread {
       }
 
     } catch (IOException e) {
-      try {
-        throw new AhorcadoException("No se puede conectar con el cliente.");
-      } catch (AhorcadoException aex) {
-        System.out.println(aex.getMessage());
-      }
+      System.out.println("No se puede conectar con el cliente");
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
