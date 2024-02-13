@@ -9,7 +9,6 @@ public class Partida {
   private int currentTurno;
   private StringBuffer palabraJugadores;
   int jugadores;
-  private String entrada;
   private List<String> palabras;
   private String currentPalabra;
   private List<String> letrasUsadas;
