@@ -27,8 +27,8 @@ public class AhorcadoClient {
 
     Scanner sc = new Scanner(System.in);
 
-    // System.out.print("Direccion IP: ");
-    // String dir = sc.nextLine();
+    System.out.print("Direccion IP: ");
+    String dir = sc.nextLine();
 
     int port = 4444;
     try {
@@ -39,7 +39,7 @@ public class AhorcadoClient {
       System.out.println("No se pudo leer el archivo de propiedades, se usó el puerto por defecto(4444)");
     }
 
-    try (Socket cliente = new Socket("localhost", port); DataInputStream entrada = new DataInputStream(cliente.getInputStream()); DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());) {
+    try (Socket cliente = new Socket(dir, port); DataInputStream entrada = new DataInputStream(cliente.getInputStream()); DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());) {
 
       AhorcadoClient ac = new AhorcadoClient(entrada, salida, sc);
       ac.jugar();
