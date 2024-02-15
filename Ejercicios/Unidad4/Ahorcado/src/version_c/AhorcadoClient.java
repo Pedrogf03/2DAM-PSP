@@ -83,7 +83,6 @@ public class AhorcadoClient {
         }
         break;
       case "checking":
-        System.out.println(fromServer);
         processGame(response);
         if (response.length == 3) {
           do {
@@ -121,8 +120,8 @@ public class AhorcadoClient {
         System.out.print("¡Habéis adivinado la palabra secreta! (" + palabraCorrecta + ")");
       }
 
-      // response = checking;<letra/palabra>;<true/false>;<letrasUsadas>;<palabra>.lenght == 5 
-    } else if (response.length == 5) {
+      // response = checking;<letra/palabra>;<true/false>;<letrasUsadas>;<palabra>;intentos.lenght == 6 
+    } else if (response.length == 6) {
       String type = response[1]; // Letra o palabra
       boolean correcto = Boolean.parseBoolean(response[2]); // Booleano para saber si lo introducido por el usuario es correcto o no
       String palabrasUsadas = response[3]; // Lista de letras usadas
