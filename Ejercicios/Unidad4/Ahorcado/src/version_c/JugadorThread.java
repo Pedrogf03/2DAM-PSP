@@ -70,7 +70,7 @@ public class JugadorThread extends Thread {
 
         if (output.contains("win") || output.contains("lose")) {
           input = in.readUTF();
-          // if(input.equals("s")) then status: end -> playing else if(input.equals("n")) then status: end -> waiting_players
+
           if (input.equalsIgnoreCase("N")) {
             partida.finalizar();
           }
