@@ -25,11 +25,7 @@ public class AhorcadoClient {
       conf.load(new FileInputStream("client.properties"));
       port = Integer.parseInt(conf.getProperty("PORT"));
     } catch (IOException e) {
-      try {
-        throw new AhorcadoException("No se pudo leer el archivo de propiedades, se usó el puerto por defecto(4444)");
-      } catch (AhorcadoException aex) {
-        System.out.println(aex.getMessage());
-      }
+      System.out.println("No se pudo leer el archivo de propiedades, se usó el puerto por defecto (4444)");
     }
 
     try (Socket cliente = new Socket(dir, port); DataInputStream entrada = new DataInputStream(cliente.getInputStream()); DataOutputStream salida = new DataOutputStream(cliente.getOutputStream());) {
