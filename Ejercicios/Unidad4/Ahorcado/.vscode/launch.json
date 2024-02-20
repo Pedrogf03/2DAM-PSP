@@ -6,6 +6,27 @@
   "configurations": [
     {
       "type": "java",
+      "name": "UserDao",
+      "request": "launch",
+      "mainClass": "version_d.UserDao",
+      "projectName": "Ahorcado_552d16c"
+    },
+    {
+      "type": "java",
+      "name": "AhorcadoClient",
+      "request": "launch",
+      "mainClass": "version_d.AhorcadoClient",
+      "projectName": "Ahorcado_552d16c"
+    },
+    {
+      "type": "java",
+      "name": "AhorcadoServer",
+      "request": "launch",
+      "mainClass": "version_d.AhorcadoServer",
+      "projectName": "Ahorcado_552d16c"
+    },
+    {
+      "type": "java",
       "name": "Current File",
       "request": "launch",
       "mainClass": "${file}"

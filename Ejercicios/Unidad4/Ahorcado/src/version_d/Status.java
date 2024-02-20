@@ -1,0 +1,5 @@
+package version_d;
+
+public enum Status {
+  LOGIN, CHECKINGLOGIN, WAITING_PLAYERS, WAITING_GAME, PLAYING, CHECKING, END
+}
