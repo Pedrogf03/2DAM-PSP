@@ -68,18 +68,20 @@ public class AhorcadoClient {
 
       switch (status) {
       case "login":
-        if (response.length > 1) {
-          Boolean log = Boolean.parseBoolean(response[1]);
-          if (!log) {
-            System.out.println("Usuario o contraseña incorrectos, intentalo de nuevo");
-          }
-        }
         System.out.print("Usuario: ");
         fromUser = scanner.nextLine();
         System.out.print("Contraseña: ");
         fromUser += ";" + generate512(scanner.nextLine());
         salida.writeUTF(fromUser);
         salida.flush();
+        break;
+      case "checkingLogin":
+        Boolean logged = Boolean.parseBoolean(response[1]);
+        if (logged) {
+          System.out.println("Has iniciado sesión correctamente");
+        } else {
+          System.out.println("Usuario o contraseña incorrectos, intentalo de nuevo");
+        }
         break;
       case "waiting":
         System.out.println("Esperando jugadores...");

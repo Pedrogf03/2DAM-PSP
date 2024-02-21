@@ -24,10 +24,10 @@ public class AhorcadoProtocol {
 
       if (entrada.equals("true")) {
         estado = Status.WAITING_PLAYERS;
-        mensaje = "";
+        mensaje = "checkingLogin;true";
       } else {
         estado = Status.LOGIN;
-        mensaje += ";false";
+        mensaje = "checkingLogin;false";
       }
 
     } else if (estado == Status.WAITING_PLAYERS) {
