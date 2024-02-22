@@ -13,16 +13,12 @@ public class JugadorThread extends Thread {
   private AhorcadoProtocol protocolo;
   private DataInputStream in = null;
   private DataOutputStream out = null;
-  private UserDAO dao;
-  private String username;
-  private String passwd;
 
   public JugadorThread(Socket socket, int turno, Game p, AhorcadoProtocol protocol) {
     this.socket = socket;
     this.partida = p;
     this.turno = turno;
     this.protocolo = protocol;
-    this.dao = new UserDAO();
   }
 
   @Override
@@ -33,28 +29,6 @@ public class JugadorThread extends Thread {
 
       in = entrada;
       out = salida;
-
-      Boolean res;
-      do {
-        // status: login -> checklogin
-        output = protocolo.procesarMensaje(null);
-        out.writeUTF(output); // login
-        out.flush();
-
-        // status: if(checklogin) -> waiting_players || if(!checklogin) -> login
-        input = in.readUTF();
-        username = input.split(";")[0];
-        passwd = input.split(";")[1];
-        res = dao.getUser(username, passwd);
-        output = protocolo.procesarMensaje("" + res);
-        out.writeUTF(output);
-        out.flush();
-      } while (!res);
-
-      // status: waiting_players -> waiting_game
-      output = protocolo.procesarMensaje(null);
-      out.writeUTF(output); // waiting
-      out.flush();
 
       partida.esperarJugadores();
 

@@ -1,41 +1,15 @@
 package version_d;
 
-public class AhorcadoProtocol {
-
-  private Status estado;
-  private String mensaje;
+public class AhorcadoProtocol extends Protocol {
 
   public AhorcadoProtocol() {
-    this.estado = Status.LOGIN;
+    super(Status.WAITING_GAME);
   }
 
-  public Status getEstado() {
-    return this.estado;
-  }
-
+  @Override
   public String procesarMensaje(String entrada) {
 
-    if (estado == Status.LOGIN) {
-
-      mensaje = "login";
-      estado = Status.CHECKINGLOGIN;
-
-    } else if (estado == Status.CHECKINGLOGIN) {
-
-      if (entrada.equals("true")) {
-        estado = Status.WAITING_PLAYERS;
-        mensaje = "checkingLogin;true";
-      } else {
-        estado = Status.LOGIN;
-        mensaje = "checkingLogin;false";
-      }
-
-    } else if (estado == Status.WAITING_PLAYERS) {
-
-      mensaje = "waiting";
-      estado = Status.WAITING_GAME;
-
-    } else if (estado == Status.WAITING_GAME) {
+    if (estado == Status.WAITING_GAME) {
 
       mensaje = "welcome";
       estado = Status.PLAYING;

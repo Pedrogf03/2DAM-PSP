@@ -3,7 +3,8 @@ package version_d;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.SocketTimeoutException;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -17,6 +18,8 @@ public class AhorcadoServer implements Runnable {
   private List<String> palabras;
   private int maxplayers;
 
+  private List<Socket> jugadores;
+
   public AhorcadoServer() throws AhorcadoException {
 
     try {
@@ -26,6 +29,7 @@ public class AhorcadoServer implements Runnable {
       puerto = Integer.parseInt(conf.getProperty("PORT"));
       maxplayers = Integer.parseInt(conf.getProperty("MAXPLAYERS"));
       palabras = Arrays.asList(conf.getProperty("WORDS").split(","));
+      jugadores = new ArrayList<>();
     } catch (IOException e) {
       throw new AhorcadoException("Ha ocurrido un error al leer las propiedades del servidor");
     }
@@ -60,20 +64,35 @@ public class AhorcadoServer implements Runnable {
   }
 
   private void start() {
-    while (!stop) {
-      try (ServerSocket server = new ServerSocket(puerto);) {
-        servidor = server;
-        while (!stop) {
-          Game partida = new Game(palabras, maxplayers);
-          for (int i = 0; i < maxplayers; i++) {
-            new JugadorThread(servidor.accept(), i + 1, partida, new AhorcadoProtocol()).start();
+    try (ServerSocket server = new ServerSocket(puerto);) {
+      servidor = server;
+      while (!stop) {
+        Socket cliente = servidor.accept(); // Se conecta un cliente
+        new Thread(() -> { // Se lanza un hilo el cual lanzara un hilo para el inicio de sesion
+          LoginThread login = new LoginThread(cliente, new LoginProtocol());
+          login.start();
+          try {
+            login.join();
+          } catch (InterruptedException e) {
+            e.printStackTrace();
           }
-        }
-      } catch (SocketTimeoutException e) {
-        continue;
-      } catch (IOException e) {
-        System.out.println("No se ha podido escuchar en el puerto " + puerto);
+          if (login.succesful()) {
+            jugadores.add(cliente); // Se guarda el socket
+            if (jugadores.size() == 3) { // Si el numero de jugadores conectados es tres, se crea la partida y se lanzan los 3 jugadores
+              Game partida = new Game(palabras, maxplayers);
+              int contador = 1;
+              for (Socket jugador : jugadores) {
+                new JugadorThread(jugador, contador, partida, new AhorcadoProtocol()).start();
+                contador++;
+              }
+              contador = 0;
+              jugadores.clear(); // Se limpia el arraylist para esperar a otros tres nuevos jugadores
+            }
+          }
+        }).start();
       }
+    } catch (IOException e) {
+      System.out.println("No se ha podido escuchar en el puerto " + puerto);
     }
   }
 
