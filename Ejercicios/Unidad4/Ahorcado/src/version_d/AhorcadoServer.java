@@ -12,7 +12,6 @@ import java.util.Scanner;
 public class AhorcadoServer implements Runnable {
 
   private int puerto;
-  // private int timeout;
   private boolean stop;
   private ServerSocket servidor;
   private List<String> palabras;
@@ -25,7 +24,6 @@ public class AhorcadoServer implements Runnable {
       Properties conf = new Properties();
       conf.load(new FileInputStream("server.properties"));
       puerto = Integer.parseInt(conf.getProperty("PORT"));
-      // timeout = Integer.parseInt(conf.getProperty("TIMEOUT"));
       maxplayers = Integer.parseInt(conf.getProperty("MAXPLAYERS"));
       palabras = Arrays.asList(conf.getProperty("WORDS").split(","));
     } catch (IOException e) {
@@ -69,7 +67,6 @@ public class AhorcadoServer implements Runnable {
     while (!stop) {
       try (ServerSocket server = new ServerSocket(puerto);) {
         servidor = server;
-        //servidor.setSoTimeout(timeout);
         while (!stop) {
           Game partida = new Game(palabras, maxplayers);
           for (int i = 0; i < maxplayers; i++) {
