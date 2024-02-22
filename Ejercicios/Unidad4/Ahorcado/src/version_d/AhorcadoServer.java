@@ -56,14 +56,10 @@ public class AhorcadoServer implements Runnable {
 
   @Override
   public void run() {
-    try {
-      start();
-    } catch (AhorcadoException e) {
-      System.out.println(e.getMessage());
-    }
+    start();
   }
 
-  private void start() throws AhorcadoException {
+  private void start() {
     while (!stop) {
       try (ServerSocket server = new ServerSocket(puerto);) {
         servidor = server;
@@ -76,7 +72,7 @@ public class AhorcadoServer implements Runnable {
       } catch (SocketTimeoutException e) {
         continue;
       } catch (IOException e) {
-        throw new AhorcadoException("No se ha podido escuchar en el puerto " + puerto);
+        System.out.println("No se ha podido escuchar en el puerto " + puerto);
       }
     }
   }
