@@ -1,0 +1,3 @@
+La intencion inicial era tener un hilo en el servidor (HiloSubasta) que mientras la subasta este activa, este comprobando si en algun momento cambia el precio, para comunicarselo al cliente (ClienteSubasta), el cual tendria otro hilo que estaria comprobando si el servidor le ha dicho que el precio ha cambiado.
+
+Para realizar comprobaciones es necesario cambiar las horas de las subastas en el archivo ServidorSubastas.java, debido a que las subastas estan harcodeadas.
